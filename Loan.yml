@@ -1,0 +1,1571 @@
+swagger: '2.0'
+info:
+  version: v1.0
+  title: Fusion Loan Origination REST APIs
+  description: >
+    ## RESTful API specification for Fusion Loan Origination
+
+    **Date**: October, 2018
+
+    # Introduction
+
+    This document provides the detailed description of the Fusion Loan
+    Origination APIs. Changes to APIs definitions will occur and a new version
+    will be published. Version numbers will follow the semantic versioning
+    (https://semver.org/)  convention.  If a version is not backwards compatible
+    it will be noted in this definition.
+  termsOfService: 'http://finastra.com/terms/'
+  contact:
+    name: Finastra Team
+  license:
+    name: Finastra
+    url: 'http://www.finastra.com/licenses/LICENSE-1.0.html'
+host: api.finastra.com
+basePath: /retail/v1
+tags:
+  - name: Hire Purchase Loan Origination
+    description: RESTful APIs meant to service Fusion Loan Origination application
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /loanOrigination/hirePurchase:
+    post:
+      tags:
+        - Hire Purchase Loan Origination
+      summary: Initiate a new Hire Purchase loan origination process.
+      description: >-
+        Initiate a Hire Purchase loan origination process using the given
+        payload.
+      operationId: initiateHirePurchaseLoanOrigination
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/Authorization'
+        - $ref: '#/parameters/X-Request-ID'
+        - $ref: '#/parameters/Content-Type'
+        - $ref: '#/parameters/Ocp-Apim-Subscription-Key'
+        - in: body
+          name: HirePurchaseLoanOrigination
+          description: >-
+            Payload of the attributes associated with Hire Purchase loan
+            origination process
+          required: true
+          schema:
+            $ref: '#/definitions/HirePurchaseLoanOrigination'
+      responses:
+        '201':
+          description: Hire Purchase Loan Origination initiation successful
+          schema:
+            $ref: '#/definitions/HirePurchaseCreateUpdateResponse'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Access forbidden, invalid Authorization was used'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Internal Server Error
+    put:
+      tags:
+        - Hire Purchase Loan Origination
+      summary: >-
+        Update or replace attributes of an existing Hire Purchase loan
+        origination process
+      operationId: updateHirePurchaseLoanOrigination
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/Authorization'
+        - $ref: '#/parameters/X-Request-ID'
+        - $ref: '#/parameters/Content-Type'
+        - $ref: '#/parameters/Ocp-Apim-Subscription-Key'
+        - in: body
+          name: HirePurchaseLoanOrigination
+          description: Details of the Hire Purchase loan origination process being updated
+          required: true
+          schema:
+            $ref: '#/definitions/HirePurchaseLoanOrigination'
+      responses:
+        '200':
+          description: Hire Purchase Loan origination process sucessfully updated
+          schema:
+            $ref: '#/definitions/HirePurchaseCreateUpdateResponse'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Access forbidden, invalid Authorization was used'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: >-
+            A Hire Purchase loan origination process with the given application
+            identifier is not found
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Internal Server Error
+  '/loanOrigination/hirePurchase/{applicationId}':
+    get:
+      tags:
+        - Hire Purchase Loan Origination
+      summary: >-
+        Get details of the Hire Purchase loan origination process identified by
+        the passed loan application identifier
+      operationId: fetchHirePurchaseLoanOriginationProcessDetailsById
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/Authorization'
+        - $ref: '#/parameters/X-Request-ID'
+        - $ref: '#/parameters/Ocp-Apim-Subscription-Key'
+        - name: applicationId
+          in: path
+          description: Identifier of the Hire Purchase loan origination process
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Hire purchase loan origination process sucessfully retrieved
+          schema:
+            $ref: '#/definitions/HirePurchaseFetchResponse'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Access forbidden, invalid Authorization was used'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Internal Server Error
+parameters:
+  Authorization:
+    name: Authorization
+    description: Access token to be passed as a header
+    in: header
+    required: true
+    type: string
+  X-Request-ID:
+    name: X-Request-ID
+    description: >-
+      Format UUID - ID of the request, unique to the call, as determined by the
+      initiating party
+    in: header
+    required: true
+    type: string
+    format: uuid
+  Content-Type:
+    name: Content-Type
+    description: >-
+      Media type of the body sent to the API. To be set for consumer and
+      producer, supported value is 'application/json'. Defaults to
+      'application/json' if not set
+    in: header
+    required: false
+    type: string
+  Ocp-Apim-Subscription-Key:
+    name: Ocp-Apim-Subscription-Key
+    description: Subscription key which provides access to this API. Found in your
+    in: header
+    required: true
+    type: string
+definitions:
+  HirePurchaseLoanOrigination:
+    type: object
+    title: Hire Purchase
+    description: Complete payload for the Hire Purchase Loan Origination process
+    properties:
+      applicationDetails:
+        $ref: '#/definitions/ApplicationDetails'
+      partyDetails:
+        type: array
+        description: Party Details Collection
+        items:
+          $ref: '#/definitions/PartyDetails'
+      repaymentDetails:
+        $ref: '#/definitions/RepaymentDetails'
+      interestDetails:
+        $ref: '#/definitions/InterestDetails'
+      drawdownDetail:
+        type: array
+        description: Disbursement (Drawdown) Collection
+        items:
+          $ref: '#/definitions/DrawdownDetail'
+      balloonPayment:
+        $ref: '#/definitions/BalloonPayment'
+      pepDetails:
+        $ref: '#/definitions/PepDetails'
+      stepDetails:
+        type: array
+        description: Step Details
+        items:
+          $ref: '#/definitions/StepDetails'
+      moratoriumDetails:
+        $ref: '#/definitions/MoratoriumDetails'
+      customerCollateralAssignmentDetails:
+        type: array
+        description: Collection of Customer Collateral Proposed Assignment Details
+        items:
+          $ref: '#/definitions/CustomerCollateralAssignmentDetails'
+      supportingDocuments:
+        type: array
+        description: Supporting Documents
+        items:
+          $ref: '#/definitions/SupportingDocuments'
+  HirePurchaseCreateUpdateResponse:
+    type: object
+    title: Hire Purchase Response for create and update operations
+    description: >-
+      Response for the Hire Purchase loan origination process for create and
+      update operations
+    properties:
+      applicationBasicDetails:
+        $ref: '#/definitions/ApplicationBasicDetails'
+      loanScheduleDetails:
+        type: array
+        description: Loan Schedule details collection
+        items:
+          $ref: '#/definitions/LoanScheduleDetails'
+      applicationStatusDetails:
+        $ref: '#/definitions/ApplicationStatusDetails'
+      eventChargesDetails:
+        type: array
+        description: Event Charges Details collection
+        items:
+          $ref: '#/definitions/EventChargesDetails'
+  HirePurchaseFetchResponse:
+    type: object
+    title: Hire Purchase Response for fetch by application id operations
+    description: >-
+      Response for the Hire Purchase loan origination process for fetch by
+      application id operations
+    properties:
+      applicationBasicDetails:
+        $ref: '#/definitions/ApplicationBasicDetailsForFetch'
+      loanScheduleDetails:
+        type: array
+        description: Loan Schedule details collection
+        items:
+          $ref: '#/definitions/LoanScheduleDetails'
+      applicationStatusDetails:
+        $ref: '#/definitions/ApplicationStatusDetails'
+      eventChargesDetails:
+        type: array
+        description: Event Charges Details collection
+        items:
+          $ref: '#/definitions/EventChargesDetails'
+  ApplicationBasicDetails:
+    type: object
+    title: Application Basic Details
+    description: Application Basic Details
+    properties:
+      applicationId:
+        type: string
+        description: Loan Application ID automatically generated by the system
+        maxLength: 50
+        example: LO1312201800009
+      subProductId:
+        type: string
+        description: >-
+          Sub-Product ID of the Hire Purchase loan product that the customer has
+          applied for
+        maxLength: 50
+        example: 01301DEFAULTEUR
+      subProductName:
+        type: string
+        description: >-
+          Name of the Hire Purchase Sub-Product that the customer has applied
+          for
+        maxLength: 50
+        example: 01301DEFAULTEUR
+      loanAmount:
+        type: number
+        description: Loan Amount
+        maxLength: 31
+        example: 2000000
+      loanAmountCurrencyCode:
+        type: string
+        description: ISO Currency Code in which the loan has been applied
+        maxLength: 3
+        example: EUR
+  ApplicationDetails:
+    type: object
+    title: Application Details
+    description: Application Details
+    required:
+      - loanPurpose
+      - initiationBranchCode
+      - domicileBranchCode
+      - loanAmount
+      - feeFundingAccount
+      - loanTermType
+      - loanTerm
+      - loanCurrency
+      - facilityType
+      - facilitySubType
+      - estimatedCost
+      - applicantType
+      - subProductId
+      - loanStartDate
+      - dealerId
+    properties:
+      applicationId:
+        type: string
+        description: >-
+          Application ID (for FETCH or UPDATE mode). Based on the value
+          populated in mode, this attribute is either mandatory or optional
+        maxLength: 50
+        example: HPLO1234567
+      loanPurpose:
+        type: string
+        description: >-
+          The purpose to apply for the loan. It is defined as a Generic List.
+          However, banks can add their own Loan Purpose values during
+          implementation. Possible values are- •051-Hire Purchase Commercial
+          Vehicles •052-Hire Purchase Personal Vehicles •053-Hire Purchase
+          Construction Equipment •054-Hire Purchase Agriculture Equipment
+          •055-Hire Purchase Construction Machinery •056-Hire Purchase Industry
+          Machinery •057-Hire Purchase Motor Vehicles
+        maxLength: 50
+        example: '051'
+      loanPurposeDescription:
+        type: string
+        description: 'Description of loan Purpose in user locale. '
+        maxLength: 255
+        readOnly: true
+        example: Hire Purchase Commercial Vehicles
+      initiationBranchCode:
+        type: string
+        description: The Branch Code where the loan is initiated
+        maxLength: 50
+        example: '99999999'
+      initiationBranchName:
+        type: string
+        description: Initiation Branch Name
+        maxLength: 255
+        readOnly: true
+        example: Head Office
+      domicileBranchCode:
+        type: string
+        description: The branch code in which the loan account is established
+        maxLength: 50
+        example: '99999999'
+      domicileBranchName:
+        type: string
+        description: Domicile Branch Name
+        maxLength: 255
+        readOnly: true
+        example: '99999999'
+      loanAmount:
+        type: number
+        description: Loan amount
+        maxLength: 31
+        example: 2000000
+      feeFundingAccount:
+        type: string
+        description: Fee/ charge funding account
+        maxLength: 50
+        example: 01210LOP12301
+      loanTermType:
+        type: string
+        description: Loan Term duration in Months or Years
+        maxLength: 50
+        example: MONTHS
+      loanTermTypeDescription:
+        type: string
+        description: Description of loan term type in user locale.
+        maxLength: 255
+        readOnly: true
+        example: Months
+      loanTerm:
+        type: integer
+        description: Loan Term duration
+        maxLength: 3
+        example: 24
+      loanCurrency:
+        type: string
+        description: 'Loan ISO Currency Code. E.g., MMK, USD, EUR'
+        maxLength: 3
+        example: EUR
+      facilityType:
+        type: string
+        description: >-
+          Type of facility that the customer is applying for.  Defined as a
+          Generic List supplied by Finastra. Values should not be modified. For
+          Hire Purchase origination, value in this field should be ‘LOAN’
+          (Description –Term Loan)
+        maxLength: 50
+        example: LOAN
+      facilityTypeDescription:
+        type: string
+        description: Description of facility type in user locale.
+        maxLength: 255
+        readOnly: true
+        example: Term Loan
+      facilitySubType:
+        type: string
+        description: >-
+          Facility Sub Type is an additional sub-division of the Facility being
+          applied for by the customer.  Defined as a Generic List supplied by
+          Finastra. Values should not be modified. For Hire Purchase
+          origination, value in this field should be HIREPURCHASELOAN
+          (Description – Hire Purchase Loan)
+        maxLength: 50
+        example: HIREPURCHASELOAN
+      facilitySubTypeDescription:
+        type: string
+        description: Description of facility sub type in user locale.
+        maxLength: 255
+        readOnly: true
+        example: Hire Purchase Loans
+      estimatedCost:
+        type: number
+        description: >-
+          The estimated total cost of the facility that the customer is wholly
+          or partially fund with this loan
+        maxLength: 31
+        example: 2000000
+      applicantType:
+        type: string
+        description: >-
+          Type of customer that is applying for the facility. Defined as a
+          Generic List supplied by Finastra. Values should not be modified.
+          Possible values are- •1062-Personal •1063-Enterprise. Depending on the
+          value passed in this field, either Personal Hire Purchase process or
+          Enterprise Hire Purchase process is initiated.
+        maxLength: 50
+        example: '1062'
+      applicantTypeDescription:
+        type: string
+        description: Description of applicant type in user locale
+        maxLength: 255
+        readOnly: true
+        example: Personal
+      subProductId:
+        type: string
+        description: >-
+          Product ID that is configured for Hire Purchase in Essence.  E.g.,
+          13119RETAILMMK - Hire Purchase Dealer Guarantee Upfront,
+          13131RETAILMMK - AFP- Hire Purchase Upfront.  Banks can configure
+          their own sub-product IDs.
+        maxLength: 50
+        example: 13119RETAILMMK
+      additionalNotes:
+        type: string
+        description: A text field to update Additional Notes related to the loan
+        maxLength: 1000
+        example: HP Loans
+      loanStartDate:
+        type: string
+        format: date
+        description: >-
+          Date on which the customer wants the loan account to be created. This
+          can either be the current business date or future date.  However, it
+          can never be a historical date. Accepted date format is YYYY-MM-DD
+      dealerId:
+        type: string
+        description: Customer ID of the Hire Purchase Dealer.
+        maxLength: 50
+        example: '000003'
+      commitmentId:
+        type: string
+        description: >-
+          Commitment ID of the Hire Purchase Dealer. For normal Hire Purchase
+          loans, this field is mandatory.  However, for special Hire Purchase
+          loans, this field is optional
+        maxLength: 50
+        example: '013330000301'
+      userDefinedFields:
+        type: array
+        description: User defined data collection
+        items:
+          $ref: '#/definitions/UserDefinedFields'
+  PartyDetails:
+    type: object
+    title: Party Details Collection
+    description: Party Details Collection
+    required:
+      - partyId
+      - partyRole
+    properties:
+      partyId:
+        type: string
+        description: A valid Customer ID
+        maxLength: 25
+        example: LOP123
+      partyRole:
+        type: string
+        description: >-
+          The role that a customer plays in the Hire Purchase loan application
+          processing. Defined as a Generic List supplied by Finastra. Values
+          should not be modified.  Possible values are •A – Primary Applicant •C
+          – Co-Applicant •G – Guarantor.  Having one ‘A’ is mandatory.  Multiple
+          ‘C’s or ‘G’s can be added.
+        maxLength: 50
+        example: A
+      partyRoleDescription:
+        type: string
+        description: Description of Party Role in user locale.
+        maxLength: 255
+        readOnly: true
+        example: Primary Applicant
+  RepaymentDetails:
+    type: object
+    title: Repayment Schedule Details
+    description: Repayment Schedule Details
+    required:
+      - repaymentStartDate
+      - repaymentFrequency
+      - interestRepaymentFrequency
+      - repaymentMethod
+      - isLastDayOfTheMonth
+      - settlementMode
+      - firstPrincipalRepaymentDate
+      - firstInterestRepaymentDate
+    properties:
+      repaymentStartDate:
+        type: string
+        format: date
+        description: >-
+          The date from when the customer begins the repayment for the loan. 
+          This date cannot be before the Drawdown Date or it should not cross
+          two repayment frequencies.If the repaymentMethod is set as Fixed
+          Principal Accrued Interest, then the Repayment Start Date is the date
+          from when the customer begins the repayment of the principal amount of
+          the loan. Accepted date format is YYYY-MM-DD.
+        example: '2018-11-10'
+      repaymentFrequency:
+        type: string
+        description: >-
+          Repayment Frequency of the loan. Defined as a Generic List supplied by
+          Finastra. Values should not be modified. Possible values are •M1 -
+          Monthly •M12 - Annually •M2 - Once In 2 months •M3 - Quarterly •M6 -
+          Half-Yearly •T1 - Bi-Monthly •W1 - Weekly •W2 - Fortnightly •M4 - Once
+          in 4 Months
+        maxLength: 50
+        example: M1
+      repaymentFrequencyDescription:
+        type: string
+        description: Description of Repayment Frequency in user locale
+        maxLength: 255
+        readOnly: true
+        example: Monthly
+      interestRepaymentFrequency:
+        type: string
+        description: >-
+          Date from when the customer begins the repayment of the interest
+          amount of the loan. Value in this field should be the same as the
+          value in repaymentFrequency field. Only exception is if the
+          repaymentType is Fixed Principal Accrued Interest with the Interest
+          repayment frequency being different from principal repayment
+          frequency.Defined as a Generic List supplied by Finastra. Values
+          should not be modified. Possible values are •M1 - Monthly •M12 -
+          Annually •M2 - Once In 2 months •M3 - Quarterly •M6 - Half-Yearly •T1
+          - Bi-Monthly •W1 - Weekly •W2 - Fortnightly •M4 - Once in 4 Months
+        maxLength: 50
+        example: M1
+      interestRepaymentFrequencyDescription:
+        type: string
+        description: Description of interest Repayment Frequency in user locale
+        maxLength: 255
+        readOnly: true
+        example: Monthly
+      repaymentMethod:
+        type: string
+        description: >-
+          Indicates the type of repayment method applicable for the loan.
+          Defined as a Generic List supplied by Finastra. Values should not be
+          modified. Possible values are •U - Upfront Discounted Interest •FPI -
+          Fixed Principal Accrued Interest •EMI - Reducing
+        maxLength: 50
+        example: U
+      repaymentMethodDescription:
+        type: string
+        description: Description of interest Repayment Method in user locale
+        maxLength: 255
+        readOnly: true
+        example: Upfront Discounted Interest
+      isLastDayOfTheMonth:
+        type: boolean
+        description: >-
+          Indicates if the repayment date for the loan is the last day of the
+          month. Valid values are true/ false. If set to true,
+          firstPrincipalRepaymentDate and firstInterestRepaymentDate should be
+          input as the last day of the month on which the repayment falls due
+        example: false
+      settlementMode:
+        type: string
+        description: >-
+          Mode of loan repayment. Defined as a Generic List supplied by
+          Finastra. Values should not be modified. Possible values are •CASH -
+          Cash •ACCTRANSFER - Account Transfer
+        maxLength: 50
+        example: CASH
+      settlementModeDescription:
+        type: string
+        description: Description of Settlement Mode in user locale
+        maxLength: 255
+        readOnly: true
+        example: Cash
+      repaymentAccountNumber:
+        type: string
+        description: >-
+          Account Number from where the loan repayments are debited.  If
+          settlementMode is CASH, leave this field empty
+        maxLength: 50
+        example: 01210LOP12301
+      firstPrincipalRepaymentDate:
+        type: string
+        format: date
+        description: >-
+          The date on which the customer has to make the first loan repayment
+          towards principal. Accepted date format is YYYY-MM-DD
+        example: '2018-11-10'
+      firstInterestRepaymentDate:
+        type: string
+        format: date
+        description: >-
+          The date on which the customer has to make the first repayment towards
+          interest.  Value in this field should be same as the value in
+          firstPrincipalRepaymentDate field. Only exception is, if the
+          repaymentType is ‘Fixed Principal Accrued Interest’ with the Interest
+          repayment frequency being different from the principal repayment
+          frequency, this field can have a different value.  Accepted date
+          format is YYYY-MM-DD
+        example: '2018-11-10'
+  InterestDetails:
+    type: object
+    title: Interest Details
+    description: Interest Details
+    required:
+      - interestRateType
+      - customerMargin
+    properties:
+      interestRateType:
+        type: string
+        description: >-
+          Applicable interest Rate Type for the loan. Defined as a Generic List
+          supplied by Finastra. Values should not be modified. Possible values
+          are •FLOATING - Floating •FIXED - Fixed •PROGRESSIVE - Progressive.
+          Progressive rate means an interest rate where a loan account can start
+          off with one interest rate and this interest rate can change after a
+          period of time.  The length of time that the loan retains an interest
+          type is configurable
+        maxLength: 50
+        example: FIXED
+      interestRateTypeDescription:
+        type: string
+        description: Description of Interest Rate in user locale
+        maxLength: 255
+        readOnly: true
+        example: Fixed
+      remainingInterestRateType:
+        type: string
+        description: >-
+          Only applicable if interestRateType is PROGRESSIVE. Defined as a
+          Generic List supplied by Finastra. Values should not be modified.
+          Possible values are •FLOATING - Floating •FIXED - Fixed
+        maxLength: 50
+        example: FIXED
+      remainingInterestRateTypeDescription:
+        type: string
+        description: Description of Remaining Interest Rate in user locale
+        maxLength: 255
+        readOnly: true
+        example: Fixed
+      resetFrequency:
+        type: string
+        description: >-
+          This field indicates the frequency in which the interest rate on the
+          loan should be reset.  Applicable only if interestRateType is
+          FLOATING. Defined as a Generic List supplied by Finastra. Values
+          should not be modified. Possible values are •MONTHLY - Monthly
+          •ANNUALLY - Annually •ONCEIN2MONTHS - Once In 2 months •QUARTERLY -
+          Quarterly •HALFYEARLY - Half-Yearly •BIMONTHLY - Bi-Monthly •WEEKLY -
+          Weekly •FORTNIGHTLY - Fortnightly •ONCEIN4MONTHS - Once in 4 Months
+          •NA - NA
+        maxLength: 50
+        example: MONTHLY
+      resetFrequencyDescription:
+        type: string
+        description: Description of reset Frequency in user locale
+        maxLength: 255
+        readOnly: true
+        example: Monthly
+      resetDate:
+        type: string
+        format: date
+        description: >-
+          The date on which the Interest rate will be reset.  Value in this
+          field is dependent on the value defined in resetFrequency. This field
+          is only applicable if interestRateType is FLOATING. Accepted date
+          format is YYYY-MM-DD
+        example: '2020-11-10'
+      customerMargin:
+        type: number
+        description: >-
+          This field indicates the margin to add to or subtract from the
+          interest rate
+        maxLength: 15
+        example: 1
+  DrawdownDetail:
+    type: object
+    title: Disbursement (Drawdown) Collection
+    description: Disbursement (Drawdown) Collection
+    required:
+      - drawdownDate
+      - drawdownAmount
+    properties:
+      drawdownDate:
+        type: string
+        format: date
+        description: >-
+          The expected date of first loan disbursement.  Accepted date format is
+          YYYY-MM-DD.
+        example: '2020-11-10'
+      drawdownAmount:
+        type: number
+        description: >-
+          The amount of disbursement.  For Hire Purchase loans, this amount is
+          equal to the loanAmount
+        maxLength: 31
+        example: 2000000
+      longTermInsuranceFixedAmount:
+        type: number
+        description: Long term Insurance (LTI) Fixed Amount
+        maxLength: 31
+        example: 0
+      longTermInsurancePlan:
+        type: string
+        description: >-
+          LTI Plan – Defined as a Generic List. It is configured in the host
+          system.  Each insurance plan type defines insurance properties such
+          as, insurance exit age, premium amount, and the insurance plan
+          description.
+        maxLength: 50
+        example: A
+      shortTermInsuranceAmount:
+        type: number
+        description: Short Term Insurance (STI) Amount
+        maxLength: 31
+        example: 0
+      shortTermInsuranceCollectionMethod:
+        type: string
+        description: >-
+          STI Collection Method. Defined as a Generic List supplied by Finastra.
+          Values should not be modified. Possible values are •UPFRONT - Upfront
+          •SPREAD - Spread Across
+        maxLength: 50
+        example: UPFRONT
+      shortTermInsuranceCollectionMethodDescription:
+        type: string
+        description: Description of Short Term Insurance Collection Method in user locale
+        maxLength: 255
+        readOnly: true
+        example: Upfront
+      additionalShortTermInsuranceAmount:
+        type: number
+        description: Additional Short-Term Insurance (ASTI) Amount
+        maxLength: 31
+        example: 0
+      additionalShortTermInsuranceCollectionMethod:
+        type: string
+        description: >-
+          ASTI Collection Method.  Defined as a Generic List supplied by
+          Finastra. Values should not be modified. Possible values are •UPFRONT
+          - Upfront •SPREAD - Spread Across
+        maxLength: 50
+        example: UPFRONT
+      additionalShortTermInsuranceCollectionMethodDescription:
+        type: string
+        description: >-
+          Description of Additional Short Term Insurance Collection Method in
+          user locale
+        maxLength: 255
+        readOnly: true
+        example: Upfront
+      drawdownNotes:
+        type: string
+        description: 'Enter notes related to loan drawdown, if required.'
+        maxLength: 255
+        example: First Drawdown on 2018-10-10
+  BalloonPayment:
+    type: object
+    title: Balloon Payment
+    description: Balloon Payment
+    properties:
+      balloonAmount:
+        type: number
+        description: >-
+          It is a facility that allows a customer to repay the remaining
+          outstanding loan amount in a single large repayment at the end of the
+          repayment schedule. Balloon Amount is only for applicable for
+          repaymentMethod 'EMI'-Reducing
+        maxLength: 31
+        example: 1000
+      notes:
+        type: string
+        description: Balloon Payment Notes is only for EMI repayment Type
+        maxLength: 255
+        example: Balloon Amount for last payment
+  PepDetails:
+    type: object
+    title: Principal Extra Payment Details
+    description: Principal Extra Payment Details
+    properties:
+      pepAmount:
+        type: number
+        description: >-
+          Planned Extra Payment (PEP) is a facility to add one or more
+          repayments in addition to the scheduled repayments
+        maxLength: 31
+        example: 1000
+      startDate:
+        type: string
+        format: date
+        description: Start Date for PEP. Accepted date format is YYYY-MM-DD.
+        example: '2018-11-10'
+      frequency:
+        type: string
+        description: >-
+          Frequency of PEP payments. Defined as a Generic List supplied by
+          Finastra. Values should not be modified. Possible values are •MONTHLY
+          - Monthly •ANNUALLY - Annually •ONCEIN2MONTHS - Once In 2 months
+          •QUARTERLY - Quarterly •HALFYEARLY - Half-Yearly •BIMONTHLY -
+          Bi-Monthly •WEEKLY - Weekly •FORTNIGHTLY - Fortnightly •ONCEIN4MONTHS
+          - Once in 4 Months •NA - NA PEP frequency cannot be less than the
+          repaymentFrequency
+        maxLength: 50
+        example: M1
+      frequencyDescription:
+        type: string
+        description: Description of Frequency in user locale
+        maxLength: 255
+        readOnly: true
+        example: Monthly
+      noOfPayments:
+        type: integer
+        description: Number of PEP Payments
+        maxLength: 3
+        example: 1
+      notes:
+        type: string
+        description: 'Enter PEP notes, if required'
+        maxLength: 255
+        example: Initial payment
+  StepDetails:
+    type: object
+    title: Step Details
+    description: Step Details
+    properties:
+      stepAmount:
+        type: number
+        description: >-
+          It is a facility to increase or decrease the scheduled repayment
+          amount for a set of repayments. This set is called a block. A
+          repayment schedule can include one or more such blocks. This repayment
+          facility cannot co-exist with PEP. Also, a step-up and a step-down
+          cannot co-exist in a repayment schedule
+        maxLength: 31
+        example: 100
+      stepFirstPaymentNumber:
+        type: integer
+        description: Step First Repayment Number
+        maxLength: 3
+        example: 6
+      stepLastPaymentNumber:
+        type: integer
+        description: Step Last repayment Number
+        maxLength: 3
+        example: 8
+      stepNotes:
+        type: string
+        description: 'Enter step payment notes, if required.'
+        maxLength: 255
+        example: Step Up payment from 6th to 8th
+  MoratoriumDetails:
+    type: object
+    title: Moratorium Details
+    description: Moratorium Details
+    properties:
+      moratoriumBasis:
+        type: string
+        description: >-
+          Moratorium is defined as a repayment holiday when the customer is not
+          required to make regular repayments. This field defines the basis on
+          which moratorium can be defined. Defined as a Generic List supplied by
+          Finastra. Values should not be modified. Possible values are •PRINCINT
+          - Principal and Interest •PRINC - Principal only •INT - Interest only
+        maxLength: 50
+        example: PRINCINT
+      moratoriumBasisDescription:
+        type: string
+        description: Description of Moratorium in user locale
+        maxLength: 255
+        readOnly: true
+        example: Principal and Interest
+      moratoriumPeriod:
+        type: integer
+        description: Moratorium Period in months
+        maxLength: 3
+        example: 3
+      notes:
+        type: string
+        description: 'Enter moratorium notes, if required'
+        maxLength: 255
+        example: Moratorium for 3 Payments
+      interestCollectionMode:
+        type: string
+        description: >-
+          Interest Collection Mode during the moratorium period. Defined as a
+          Generic List supplied by Finastra. Values should not be modified.
+          Possible values are •SPREADACROSS - Spread Across •ADDTONEXT - Add To
+          Next. Add to Next- The interest accrued during Moratorium will be
+          collected at the immediate next payment. So the first payment after
+          moratorium will be a bulkier one as it holds all of interest accrued
+          for the moratorium period. RepaymentMethod supported are-  EMI, EMI
+          with PEP, EMI with balloon, FPI with same and different frequencies.
+          Spread Across- In this case, the interest accrued during moratorium
+          will be capitalized on moratorium end date to the outstanding balance
+          of the loan and schedule is regenerated.  Repayment types supported-
+          EMI, FPI with same frequency, EMI with PEP, EMI with Balloon
+        maxLength: 50
+        example: ADDTONEXT
+      interestCollectionModeDescription:
+        type: string
+        description: Description of Interest Collection Mode in user locale
+        maxLength: 255
+        readOnly: true
+        example: Add To Next
+  CustomerCollateralAssignmentDetails:
+    type: object
+    title: Customer Collateral Assignment Details
+    description: Collection of Customer Collateral Proposed Assignment Details
+    properties:
+      customerId:
+        type: string
+        description: >-
+          Customer ID of the applicant whose collateral is being proposed for
+          this application. Non-applicant collaterals cannot be used for the
+          application.
+        maxLength: 50
+        example: LOP123
+      collateralId:
+        type: string
+        description: >-
+          Collateral ID of the Customer mentioned in customerId field.  The
+          Collateral being proposed should have available cover value to
+          propose.
+        maxLength: 50
+        example: 053016991
+      proposedAmount:
+        type: number
+        description: The value of proposed collateral that is assigned to the application
+        maxLength: 31
+        example: 400000
+      proposedAmountCurrency:
+        type: string
+        description: ISO Currency Code of the proposed Collateral Amount
+        maxLength: 3
+        example: EUR
+  SupportingDocuments:
+    type: object
+    title: Supporting Documents
+    description: Supporting Documents Collection
+    properties:
+      capturedDate:
+        type: string
+        format: date
+        description: Date when the document is captured. Accepted date format is YYYY-MM-DD
+        example: '2018-09-13'
+      noOfCopies:
+        type: integer
+        description: Number of physical copies required of the document being submitted
+        maxLength: 2
+        example: 1
+      isHeld:
+        type: boolean
+        description: >-
+          Is the original document held by the Bank? Valid values are-
+          (true/false)
+        example: false
+      isPhotocopied:
+        type: boolean
+        description: >-
+          Does the Bank hold the photo copied document? Valid values are-
+          (true/false)
+        example: true
+      isMandatory:
+        type: boolean
+        description: >-
+          Is the selected document category and document type mandatory for the
+          loan application type? Valid values are (true/false)
+        example: true
+      isViewed:
+        type: boolean
+        description: >-
+          Is the document submitted by the customer viewed by the Bank user?
+          Valid values are- (true/false)
+        example: false
+      isScanned:
+        type: boolean
+        description: >-
+          Is the document submitted by the customer scanned by the Bank user?
+          Valid values are- (true/false)
+        example: true
+      partyId:
+        type: string
+        description: >-
+          Customer id from whom the document was collected. The id should belong
+          to the applicants who are mapped to document checklist definition
+        maxLength: 25
+        example: LOP123
+      expiryDate:
+        type: string
+        format: date
+        description: Expiry date of the document. Accepted date format is YYYY-MM-DD
+        maxLength: 10
+        example: '2032-04-22'
+      documentScanReference:
+        type: string
+        description: Document Scan Reference from the document management system
+        maxLength: 100
+        example: UID4555559999
+      documentCategoryReference:
+        type: string
+        description: >-
+          Document Category Reference – Defined as a Generic List and
+          configurable by the Bank. Example value- LODOCCAT7 – Identification
+        maxLength: 50
+        example: ADDRESSPROOF
+      documentCategoryReferenceDescription:
+        type: string
+        description: Description of Document Category Reference in user locale
+        maxLength: 255
+        readOnly: true
+        example: Address Proof
+      documentTypeReference:
+        type: string
+        description: >-
+          Document Type reference – Defined as a Generic List and configurable
+          by the Bank.  The list displayed in Document Types is mapped with the
+          selected documentCategoryReference. Possible values are- •LOID001 -
+          Copy of NRC •LOID005 - Recommendation from Department Head •LOID004 -
+          Recommendation from HR •LOID003 - Recommendation for Marital Status,
+          Residence •LOID002 - Copy of Household Registration List
+        maxLength: 50
+        example: PASSPORT
+      documentTypeReferenceDescription:
+        type: string
+        description: Description of Document Type Reference in user locale
+        maxLength: 255
+        readOnly: true
+        example: Passport
+      additionalChecks:
+        type: array
+        description: Additional Checks Collection per each document.
+        items:
+          $ref: '#/definitions/AdditionalChecks'
+  AdditionalChecks:
+    type: object
+    title: Additional Checks
+    description: >-
+      Additional Checks Collection per each document. This collection is one of
+      the attributes in the collection 'supportingDocuments'
+    properties:
+      addChkReference:
+        type: string
+        description: >-
+          These are the manual checks that you must perform at the time of
+          origination and while collecting the document. The manual checks can
+          either be Mandatory or Optional based on the isMandatory option.
+          Defined as a Generic List and configurable by the Bank. Possible
+          values are •SIGNATUREVERIFCIATION - Signature Verification
+          •NOTARIZATION - Notarization •COMPLETE - Correct/Complete
+          •ADDITIONALCHECKS - Additional Check
+        maxLength: 50
+        example: NOTARIZATION
+      isMandatory:
+        type: boolean
+        description: Linked with the previous field. Valid values are- (true/false)
+        example: true
+      isManualCheck:
+        type: boolean
+        description: >-
+          Checks that must be manually performed by Loan Origination application
+          user to proceed with the application. The manual checks can either be
+          Mandatory or Optional. Valid values are-  (true/false)
+        example: true
+  UserDefinedFields:
+    type: object
+    title: 'User Defined Fields [UDFs]'
+    description: Attributes that capture all the addtional required details
+    properties:
+      name:
+        type: string
+        description: >-
+          Defined name of the user defined attribute as configured in Loan
+          Origination system
+        maxLength: 255
+        example: DEALER_SECURITY_ACC
+      description:
+        type: string
+        description: >-
+          Description of the user defined field attribute as configured in
+          system
+        maxLength: 255
+        example: Dealer security account number
+      isReadOnly:
+        type: boolean
+        description: >-
+          Indicate additional data for fetch operation, if marked as true.Valid
+          values are- (true/false)
+        example: true
+      dataType:
+        type: string
+        description: Data type of the user defined field
+        maxLength: 20
+        example: string
+      value:
+        type: object
+        description: Value passed for the user defined field
+        example: 01210LOP12301
+  LoanScheduleDetails:
+    type: object
+    title: Loan Schedule details collection
+    description: Loan Schedule details collection
+    properties:
+      repaymentNumber:
+        type: integer
+        description: Sequential number of a Repayment that appears in the Payment Schedule
+        maxLength: 3
+        example: 12
+      repaymentDate:
+        type: string
+        format: date
+        description: Repayment Due Date
+        maxLength: 10
+        example: '2032-04-22'
+      capitalAmount:
+        type: number
+        description: Loan Amount
+        maxLength: 31
+        example: 8333.37
+      interestAmount:
+        type: number
+        description: Interest Amount
+        maxLength: 31
+        example: 35.88
+      outstandingBalance:
+        type: number
+        description: Outstanding Principal Balance
+        maxLength: 31
+        example: 8369.25
+      repaymentAmount:
+        type: number
+        description: Repayment Amount
+        maxLength: 31
+        example: 0
+      scheduleChargeAmount:
+        type: number
+        description: Charge amount linked with each scheduled repayment
+        maxLength: 31
+        example: 0
+      scheduleChargeTaxAmount:
+        type: number
+        description: Tax Amount linked to the scheduled charge
+        maxLength: 31
+        example: 0
+      interestRate:
+        type: number
+        description: Interest Rate
+        maxLength: 15
+        example: 5
+      repaymentType:
+        type: string
+        description: >-
+          Repayment Type – Defined as a Generic List. Possible values are- •U -
+          Upfront Discounted Interest •FPI - Fixed Principal Accrued Interest
+          •EMI - Reducing
+        maxLength: 50
+        example: FPI
+  ApplicationStatusDetails:
+    type: object
+    title: Application Status Details
+    description: Application Status Details
+    properties:
+      applicationPhase:
+        type: string
+        description: >-
+          The current of the loan application. Possible values are- •APPLN -
+          Application •ASSMT - Assessment •OFFER - Offer •SETUP - Set up
+        maxLength: 50
+        example: APPLN
+      applicationPhaseDescription:
+        type: string
+        description: Description of Application Phase in user locale
+        maxLength: 255
+        readOnly: true
+        example: Application Phase
+      applicationPhaseStatus:
+        type: string
+        description: >-
+          AThe current status of the loan application after an operation is
+          performed as per mode. Possible values are- •POSADCIP - Liabilities
+          and Securities Captured •POSADLDC - Application Data Complete
+          •POSAPLDC - Application Details Captured •POSREPDTLS - Repayment
+          Details Captured •'NEADC - Auto Declined •NECCD - Credit Committee
+          Declined •NEUOD - Declined - User Override •NEUWD - Underwriter
+          Declined •POSUWAPR - Underwriter Approved •POSOFFAC - Offer Accepted
+          •POSOFFIS - Offer Issued •NECOM - Setup Complete
+        maxLength: 50
+        example: POSADLDC
+      applicationPhaseStatusDescription:
+        type: string
+        description: Description of Application Phase Status in user locale
+        maxLength: 255
+        readOnly: true
+        example: Application Data Complete
+      currentUser:
+        type: string
+        description: The current user working on the loan application
+        maxLength: 30
+        example: retail
+      currentBranch:
+        type: string
+        description: The current processing branch of the application
+        maxLength: 8
+        example: '00000001'
+      currentBranchName:
+        type: string
+        description: Current Branch Name
+        maxLength: 255
+        readOnly: true
+        example: White Field Branch
+      lastActedUser:
+        type: string
+        description: The last user who worked on the application prior to the currentUser
+        maxLength: 30
+        example: retail
+  EventChargesDetails:
+    type: object
+    title: Event Charges Details collection
+    description: Event Charges Details collection
+    properties:
+      feeName:
+        type: string
+        description: >-
+          Name of the Event Fee linked to the loan application phase. Defined as
+          the response from Event Charge configuration. Possible values are-
+          •Staff HP Upfront - Dealer Commission •AFP Hire Purchase Dealer Sales
+          commission •AFP Hire purchase Commission
+        maxLength: 50
+        example: Application Data Complete Charge
+      feeAmount:
+        type: number
+        description: Fee Amount
+        maxLength: 31
+        example: 1000
+      feeAmountCurrency:
+        type: string
+        description: Fee Amount Currency Code
+        maxLength: 3
+        example: EUR
+      feeCollectedAtPhase:
+        type: string
+        description: Fee to be collected at the  applicationPhase
+        maxLength: 50
+        example: APPLN
+      feeCollectedAtPhaseDescription:
+        type: string
+        description: Description of  Phase at which fee is collected  in user locale
+        maxLength: 255
+        readOnly: true
+        example: Application Phase
+      feeCollectedAtPhaseState:
+        type: string
+        description: Fee to be collected at applicationStatus
+        maxLength: 50
+        example: POSADLDC
+      feeCollectedAtPhaseStateDescription:
+        type: string
+        description: >-
+          Description of the Phase State at which fee is colllected in user
+          locale
+        maxLength: 255
+        readOnly: true
+        example: Application Data Complete
+  ApplicationBasicDetailsForFetch:
+    type: object
+    title: Application Basic Details for fetch operation
+    description: Application Basic Details for fetch operation
+    properties:
+      applicationId:
+        type: string
+        description: Loan Application ID automatically generated by the system
+        maxLength: 50
+        example: LO1312201800009
+      subProductId:
+        type: string
+        description: >-
+          Product ID that is configured for Hire Purchase in Essence.  E.g.,
+          13119RETAILMMK - Hire Purchase Dealer Guarantee Upfront,
+          13131RETAILMMK - AFP- Hire Purchase Upfront.  Banks can configure
+          their own sub-product IDs.
+        maxLength: 50
+        example: 13119RETAILMMK
+      subProductName:
+        type: string
+        description: >-
+          Name of the Hire Purchase Sub-Product that the customer has applied
+          for
+        maxLength: 50
+        example: 13119RETAILMMK
+      loanAmount:
+        type: number
+        description: Loan Amount
+        maxLength: 31
+        example: 2000000
+      loanAmountCurrencyCode:
+        type: string
+        description: IISO Currency Code in which the loan has been applied
+        maxLength: 3
+        example: EUR
+      loanPurpose:
+        type: string
+        description: >-
+          The reason customer wants to apply for a loan. – Defined as a Generic
+          List. Banks can add their own Loan Purposes at the time of
+          implementation.Possible values are: 051-Hire Purchase Commercial
+          Vehicles, 052-Hire Purchase Personal Vehicles,053-Hire Purchase
+          Construction Equipment's, 054-Hire Purchase - Agriculture Equipment's,
+          055-Hire Purchase Construction Machinery, 056-Hire Purchase – Industry
+          Machinery, 057-Hire Purchase – Motor Vehicles
+        maxLength: 50
+        example: '051'
+      loanPurposeDescription:
+        type: string
+        description: 'Description of loan Purpose in user locale. '
+        maxLength: 255
+        readOnly: true
+        example: Hire Purchase Commercial Vehicles
+      initiationBranchCode:
+        type: string
+        description: Branch Code from which the loan has been originated
+        maxLength: 8
+        example: '99999999'
+      initiationBranchName:
+        type: string
+        description: Initiation Branch Name
+        maxLength: 255
+        readOnly: true
+        example: Head Office
+      domicileBranchCode:
+        type: string
+        description: The branch code in which the loan account is established.
+        maxLength: 8
+        example: '99999999'
+      domicileBranchName:
+        type: string
+        description: Domicile Branch Name
+        maxLength: 255
+        readOnly: true
+        example: '99999999'
+      feeFundingAccount:
+        type: string
+        description: Fee / charge Ftringunding Account
+        maxLength: 50
+        example: 01210LOP12301
+      loanTermType:
+        type: string
+        description: Loan Term Type - in Months or Years
+        maxLength: 50
+        example: MONTHS
+      loanTermTypeDescription:
+        type: string
+        description: Description of loan term type in user locale.
+        maxLength: 255
+        readOnly: true
+        example: Months
+      loanTerm:
+        type: integer
+        description: Loan Term unit
+        maxLength: 3
+        example: 24
+      facilityType:
+        type: string
+        description: >-
+          Type of facility that the customer is applying for.  Defined as a
+          Generic List supplied by Finastra. Values should not be modified. For
+          Hire Purchase origination, value in this field should be
+          ‘LOAN’.(Description –Term Loan)
+        maxLength: 50
+        example: LOAN
+      facilityTypeDescription:
+        type: string
+        description: Description of facility type in user locale.
+        maxLength: 255
+        readOnly: true
+        example: Term Loan
+      facilitySubType:
+        type: string
+        description: >-
+          Facility Sub Type is an additional sub-division of the Facility being
+          applied for by the customer.  – Defined as a Generic List supplied by
+          Finastra. Values should not be modified. For Hire Purchase
+          origination, value in this field should be ‘HIREPURCHASELOAN’
+          (Description – Hire Purchase Loan)
+        maxLength: 50
+        example: HIREPURCHASELOAN
+      facilitySubTypeDescription:
+        type: string
+        description: Description of facility sub type in user locale.
+        maxLength: 255
+        readOnly: true
+        example: Hire Purchase Loans
+      estimatedCost:
+        type: number
+        description: >-
+          The estimated total cost of the Facility that the customer wishes to
+          wholly or partially fund with this loan
+        maxLength: 31
+        example: 2000000
+      applicantType:
+        type: string
+        description: >-
+          Type of customer that is applying for the facility. Defined as a
+          Generic List supplied by Finastra. Values should not be modified.
+          Options are ‘1062’-Personal or ‘1063’-Enterprise. Depending on the
+          value passed in this field, either Personal Hire Purchase process or
+          Enterprise Hire Purchase process is initiated
+        maxLength: 50
+        example: '1062'
+      applicantTypeDescription:
+        type: string
+        description: Description of Applicant Type  in user locale.
+        maxLength: 50
+        readOnly: true
+        example: Personal
+      additionalNotes:
+        type: string
+        description: >-
+          A free text field which can be used to update Additional Notes for the
+          facility being originated
+        maxLength: 1000
+        example: HP Loans
+      loanStartDate:
+        type: string
+        format: date
+        description: >-
+          Date on which the customer wants the loan account to be created. This
+          can either be the current business date or future date.  However, it
+          can never be a historical date. Accepted date format is YYYY-MM-DD.
+        example: '2018-10-10'
+      dealerId:
+        type: string
+        description: A valid Customer ID of the Hire Purchase Dealer.
+        maxLength: 50
+        example: '000003'
+      commitmentId:
+        type: string
+        description: >-
+          Commitment Id of the Hire Purchase Dealer. For normal Hire Purchase
+          loans, this field is mandatory.  However for special Hire Purchase
+          loans, this field is optional.
+        maxLength: 50
+        example: '013330000301'
+      userDefinedFields:
+        type: array
+        description: User Defined Fields
+        items:
+          $ref: '#/definitions/UserDefinedFields'
+  Error:
+    type: object
+    description: >-
+      This general error structure is used throughout the common service APIs
+      that comply with RFC7807. Note that unrecognized parameters must be
+      ignored.
+    properties:
+      type:
+        type: string
+        description: 'A URI reference [RFC3986] that identifies the problem type.'
+        example: 'https://api.finastra.com/validation-error'
+      title:
+        type: string
+        description: A short summary of the problem type.
+        example: Your request parameters didn't validate.
+      status:
+        type: string
+        description: 'The HTTP status code. For example,[RFC7231], Section 6.'
+        example: 401
+      detail:
+        type: string
+        description: The details that define the source of the problem.
+        example: ''
+      instance:
+        type: string
+        description: >-
+          A URI reference that identifies the specific occurrence of the
+          problem.
+        example: ''
+      details:
+        type: array
+        description: The error details are displayed.
+        items:
+          $ref: '#/definitions/ErrorParameter'
+    example: |-
+      {
+        "type": "https://api.finastra.com/validation-error",
+        "title": "Your request parameters didn't validate.",
+        "status": "401",
+        "detail": "",
+        "instance": "",
+        "details": [
+          {"name": "year", "reason": "must be yyyy format"}
+         ]
+      }
+  ErrorParameter:
+    type: object
+    title: Error Details
+    description: The error details are displayed.
+    required:
+      - name
+      - reason
+    properties:
+      name:
+        type: string
+        description: The field or the context of the error.
+        minLength: 2
+        maxLength: 30
+        example: year
+      reason:
+        type: string
+        description: Detailed clarification of the error.
+        minLength: 2
+        maxLength: 255
+        example: must be yyyy format

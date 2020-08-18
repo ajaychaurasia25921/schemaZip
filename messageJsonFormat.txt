@@ -1,0 +1,6 @@
+{
+ "messageId":"{$timestamp[Long]}",
+ "sourceModule":"${Entity_Name}",
+ "eventType":"${CREATED/UPDATED/DELETED/DEACTIVATED}",
+ "data":{- data Object -}
+}

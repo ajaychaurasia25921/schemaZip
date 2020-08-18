@@ -1,0 +1,43 @@
+CustomerID:PK,CustomerName,Gender,Age,LastTransaction,Churn,Location,PaymentMethod,AccountType,CustomerSegment,Phone,Email,Confidence,Confidence1,AlertLevel,Alert
+string,string,string,double,double,double,string,string,string,string,string,string,double,double,string,string
+PTY0710,Lil Johnson,Female,29,220,80,Chennai,ATM,Current,Silver,7.20E+09,LilJohnson@gmail.com,80,20,red,High
+PTY0712,Sofia Robert,Female,32,330,94,Trivandrum,Cash,Current,Gold,8.34E+09,SofiaRobert@gmail.com,94,6,red,High
+PTY0716,Emily Walker,Female,35,240,85,Mumbai,Cheque,Savings,Platinum,8.34E+09,EmilyWalker@gmail.com,85,15,red,High
+PTY0718,James Smith,Male,25,280,89,Mumbai,Cash,Savings,Gold,7.24E+09,JamesSmith@gmail.com,89,11,red,High
+PTY0722,Shawn Frost,Male,34,230,81,Chennai,Cash,Current,Platinum,7.24E+09,ShawnFrost@gmail.com,81,19,red,High
+PTY0723,Katie Leo,Female,28,310,90,Trivandrum,Cash,Savings,Gold,7.24E+09,KatieLeo@gmail.com,90,10,red,High
+PTY0732,Oliver Jones,Male,30,235,82,Mumbai,NetBanking,Current,Platinum,9.60E+09,OliverJones@gmail.com,82,19,red,High
+PTY0344,Ellie Edward,Female,60,18,23,London,Cash,Savings,Silver,8867177253,EllieEdward@gmail.com,23,77,green,Low
+PTY0346,Henry Jacob,Male,45,194,70,London,Cash,Current,Gold,8867177253,HenryJacob@gmail.com,70,30,amber,Medium
+PTY0345,Sam Edward,Male,30,210,87.5,BFS,Cash,Savings,Platinum,9448722215,SamEdward@gmail.com,87.5,22.5,red,High
+PTY0703,Nick Frost,Male,40,65,45,Chennai,ATM,Current,Platinum,8.87E+09,NickFrost@gmail.com,45,55,amber,Medium
+PTY0704,Isla Dane,Female,43,59,41,Bangalore,NetBanking,Savings,Silver,9.40E+09,IslaDane@gmail.com,41,59,amber,Medium
+PTY0706,Jon Davis,Male,42,60,50,Mumbai,NetBanking,Savings,Platinum,7.20E+09,JonDavis@gmail.com,50,50,amber,Medium
+PTY0707,Diana David,Female,41,58,55,Trivandrum,Cash,Savings,Platinum,8.54E+09,DianaDavid@gmail.com,55,45,amber,Medium
+PTY0708,Daisy Jos ,Female,42,57,51,Pune,ATM,Current,Gold,7.20E+09,DaisyJos@gmail.com,51,49,amber,Medium
+PTY0709,Dan Willson,Male,45,56,45,Bangalore,Cash,Savings,Platinum,8.54E+09,DanWillson@gmail.com,45,55,amber,Medium
+PTY0713,Danies Riche,Male,44,55,50,Chennai,Cash,Savings,Gold,7.90E+09,DaniesRiche@gmail.com,50,50,amber,Medium
+PTY0714,Oliva McJos,Female,47,56,60,Bangalore,ATM,Current,Platinum,8.34E+09,OlivaMcJos@gmail.com,60,40,amber,Medium
+PTY0715,Richard Johnson,Male,41,55,45,Pune,NetBanking,Current,Silver,7.90E+09,RichardJohnson@gmail.com,45,55,amber,Medium
+PTY0719,Rean Walker,Male,42,58,45,Chennai,Cheque,Savings,Silver,7.90E+09,ReanWalker@gmail.com,45,55,amber,Medium
+PTY0720,Ameliya Wright,Female,50,66,50,Trivandrum,Cheque,Current,Silver,7.24E+09,AmeliyaWright@gmail.com,50,50,amber,Medium
+PTY0724,Paul Wright,Male,46,65,45,Bangalore,NetBanking,Savings,Silver,9.90E+09,PaulWright@gmail.com,45,55,amber,Medium
+PTY0726,Dania Leo,Female,49,64,45,Chennai,NetBanking,Current,Platinum,7.24E+09,DaniaLeo@gmail.com,45,55,amber,Medium
+PTY0727,David Robinson,Male,47,63,55,Trivandrum,Cheque,Savings,Silver,9.40E+09,DavidRobinson@gmail.com,55,45,amber,Medium
+PTY0728,Hok Thomson,Male,50,62,45,Pune,Cheque,Current,Gold,9.84E+09,HokThomson@gmail.com,45,55,amber,Medium
+PTY0736,David Hughes,Male,48,61,45,Hyderabad,ATM,Current,Silver,9.70E+09,DavidHughes@gmail.com,45,55,amber,Medium
+PTY0737,Hugh Jackman,Male,41,60,50,Kanapur,NetBanking,Savings,Gold,9.70E+09,HughJackman@gmail.com,50,50,amber,Medium
+PTY0738,Natasha William,Female,44,65,55,Kochi,Cheque,Current,Platinum,9.74E+09,NatashaWilliam@gmail.com,55,45,amber,Medium
+PTY0701,Lewas Brown,Male,50,80,35,Bangalore,ATM,Savings,Gold,9.45E+09,LewasBrown@gmail.com,35,65,green,Low
+PTY0702,Jones Smith,Male,51,125,32,Pune,Cash,Current,Gold,7.20E+09,JonesSmith@gmail.com,32,68,green,Low
+PTY0705,Alexa Leo,Female,52,90,31,Chennai,Cash,Current,Silver,8.54E+09,AlexaLeo@gmail.com,31,69,green,Low
+PTY0711,Robin Wod,Male,53,80,35,Trivandrum,NetBanking,Savings,Platinum,7.20E+09,RobinWod@gmail.com,35,65,green,Low
+PTY0717,Clair Haris ,Male,54,140,30,Pune,ATM,Current,Gold,7.90E+09,ClairHaris@gmail.com,30,70,green,Low
+PTY0721,Luci James,Female,55,127,33,Pune,Cash,Savings,Platinum,9.45E+09,LuciJames@gmail.com,33,67,green,Low
+PTY0725,Philliep Marten,Male,56,124,28,Mumbai,Cash,Savings,Platinum,9.90E+09,PhilliepMarten@gmail.com,28,72,green,Low
+PTY0729,Mariya Dane,Female,57,90,29,Noida,ATM,Current,Silver,9.84E+09,MariyaDane@gmail.com,29,71,green,Low
+PTY0730,Ruby Walker,Female,58,133,36,Bangalore,Cash,Savings,Platinum,9.84E+09,RubyWalker@gmail.com,36,64,green,Low
+PTY0731,Clark Johnson,Male,59,120,37,Pune,Cheque,Savings,Gold,9.70E+09,ClarkJohnson@gmail.com,37,63,green,Low
+PTY0733,Peter Parker,Male,60,85,38,Trivandrum,ATM,Current,Silver,9.40E+09,PeterParker@gmail.com,38,62,green,Low
+PTY0734,Jessica Jones,Female,61,90,39,Chennai,Cheque,Savings,Platinum,9.70E+09,JessicaJones@gmail.com,39,61,green,Low
+PTY0735,Harry Potter,Male,62,60,40,Noida,NetBanking,Savings,Gold,9.70E+09,HarryPotter@gmail.com,10,90,green,Low

@@ -1,0 +1,128 @@
+{
+  "activeFlag": true,
+  "bankId": "9a390928-b6bc-4094-8cc7-95c06496051a",
+  "lookupCategoryCode": "DOCUMENT",
+  "lookupCategoryTl": [
+    {
+      "entityDesc": "This the Document details for Lookup Category",
+      "entityName": "Document details",
+      "languageId": "dd7766af-4746-4c60-a108-6da4de3ecf7b"
+    }
+  ],
+  "systemFlag": true
+}
+
+{
+  "activeFlag": true,
+  "bankId": "9a390928-b6bc-4094-8cc7-95c06496051a",
+  "lookupCategoryId":"ca5ec60e-3d3f-4535-974b-b3b4d1771c44",
+  "lookupCategoryCode": "DOCUMENT",
+  "lookupCategoryTl": [
+    {
+      "entityDesc": "This the Document details for Lookup Category",
+      "entityName": "Document details",
+      "languageId": "dd7766af-4746-4c60-a108-6da4de3ecf7b",
+     "translationId":"593b8934-e1c9-4b31-9c6b-bdb3e486539d"
+    }
+  ],
+  "systemFlag": true
+}
+
+{
+  "activeFlag": true,
+  "bankId": "9a390928-b6bc-4094-8cc7-95c06496051a",
+  "lookupCategoryCode": "FINANCIAL",
+  "lookupCategoryTl": [
+    {
+      "entityDesc": "This the FINANCIAL details for Lookup Category",
+      "entityName": "Financial details",
+      "languageId": "dd7766af-4746-4c60-a108-6da4de3ecf7b"
+    }
+  ],
+  "systemFlag": true
+}
+
+// Lookup TypeCode
+
+{
+  "activeFlag": true,
+  "bankId": "9a390928-b6bc-4094-8cc7-95c06496051a",
+  "lookupTypeCode": "DOCCAT",
+  "lookupTypeTl": [
+    {
+      "entityDesc": "This Documentation for DOCCAT details",
+      "entityName": "DOCCAT details",
+      "languageId": "dd7766af-4746-4c60-a108-6da4de3ecf7b"
+    }
+  ],
+  "systemFlag": true
+}
+
+{
+  "activeFlag": true,
+  "bankId": "9a390928-b6bc-4094-8cc7-95c06496051a",
+  "lookupTypeCode": "DOCSTATUS",
+  "lookupTypeTl": [
+    {
+      "entityDesc": "This Documentation for DOCSTATUS details",
+      "entityName": "DOCSTATUS details",
+      "languageId": "dd7766af-4746-4c60-a108-6da4de3ecf7b"
+    }
+  ],
+  "systemFlag": true
+}
+
+{
+  "activeFlag": true,
+  "bankId": "9a390928-b6bc-4094-8cc7-95c06496051a",
+  "lookupTypeCode": "TAXEXEMPTIONSTATUS",
+  "lookupTypeTl": [
+    {
+      "entityDesc": "This Documentation for TAXEXEMPTIONSTATUS details",
+      "entityName": "TAXEXEMPTIONSTATUS details",
+      "languageId": "dd7766af-4746-4c60-a108-6da4de3ecf7b"
+    }
+  ],
+  "systemFlag": true
+}
+
+//
+
+{
+  "activeFlag": true,
+  "lookupValueCode": "Id Proof",
+  "lookupValueTl": [
+    {
+      "entityDesc": "This is Id Proof details",
+      "entityName": "Id Proof",
+      "languageId": "dd7766af-4746-4c60-a108-6da4de3ecf7b"
+    }
+  ],
+  "systemFlag": true
+}
+
+{
+  "activeFlag": true,
+  "lookupValueCode": "Address Proof",
+  "lookupValueTl": [
+    {
+      "entityDesc": "This is Address Proof details",
+      "entityName": "Address Proof",
+      "languageId": "dd7766af-4746-4c60-a108-6da4de3ecf7b"
+    }
+  ],
+  "systemFlag": true
+}
+
+{
+  "activeFlag": true,
+  "lookupValueCode": "DOCCOLLECTED",
+  "lookupValueTl": [
+    {
+      "entityDesc": "This is DOCCOLLECTED details",
+      "entityName": "DOCCOLLECTED details",
+      "languageId": "dd7766af-4746-4c60-a108-6da4de3ecf7b"
+    }
+  ],
+  "systemFlag": true
+}

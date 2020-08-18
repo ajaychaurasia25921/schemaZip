@@ -1,0 +1,2340 @@
+swagger: '2.0'
+info:
+    version: v1.0
+    title: Fusion Party REST APIs
+    description: |
+        ## RESTful API specification for Fusion Party
+        **Date**: October, 2018
+        # Introduction
+          This document provides the detailed description of the Fusion Fusion Party APIs. Changes to APIs definitions will occur and a new version will be published. Version numbers will follow the semantic versioning (https://semver.org/)  convention.  If a version is not backwards compatible it will be noted in this definition.
+    termsOfService: 'http://finastra.com/terms/'
+    contact:
+        name: Finastra Team
+    license:
+        name: Finastra
+        url: 'http://www.finastra.com/licenses/LICENSE-1.0.html'
+host: api.finastra.com
+basePath: /retail/v1
+tags:
+- name: Party
+  description: RESTful APIs meant to service Fusion Party application
+schemes:
+- http
+- https
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+    /party/:
+        post:
+            tags:
+            - Party
+            summary: Create a new party.
+            description: Create a party using the given payload.
+            operationId: createParty
+            consumes:
+            - application/json
+            produces:
+            - application/json
+            parameters:
+            - $ref: '#/parameters/Authorization'
+            - $ref: '#/parameters/X-Request-ID'
+            - $ref: '#/parameters/Content-Type'
+            - $ref: '#/parameters/Ocp-Apim-Subscription-Key'
+            - in: body
+              name: Party
+              description: Payload of the attributes associated with party
+              required: true
+              schema:
+                  $ref: '#/definitions/Party'
+            responses:
+                '201':
+                    description: 'Party successfully created'
+                    schema:
+                        $ref: '#/definitions/PartySummary'
+                '400':
+                    description: Bad Request
+                    schema:
+                        $ref: '#/definitions/Error'
+                '401':
+                    description: 'Access forbidden, invalid Authorization was used'
+                    schema:
+                        $ref: '#/definitions/Error'
+                '403':
+                    description: Forbidden
+                    schema:
+                        $ref: '#/definitions/Error'
+                '500':
+                    description: Internal Server Error
+        patch:
+            tags:
+            - Party
+            summary: Update specific attributes of an existing  party
+            operationId: updateSpecifcPartyDetails
+            consumes:
+            - application/json
+            parameters:
+            - $ref: '#/parameters/Authorization'
+            - $ref: '#/parameters/X-Request-ID'
+            - $ref: '#/parameters/Content-Type'
+            - $ref: '#/parameters/Ocp-Apim-Subscription-Key'
+            - in: body
+              name: Party
+              description: Details of the party being updated
+              required: true
+              schema:
+                  $ref: '#/definitions/PartyUpdate'
+            responses:
+                '204':
+                    description: 'Party sucessfully updated'
+                '400':
+                    description: 'Bad Request'
+                    schema:
+                        $ref: '#/definitions/Error'
+                '401':
+                    description: 'Access forbidden, invalid Authorization was used'
+                    schema:
+                        $ref: '#/definitions/Error'
+                '403':
+                    description: Forbidden
+                    schema:
+                        $ref: '#/definitions/Error'
+                '404':
+                    description: A party with the given party id is not found
+                    schema:
+                        $ref: '#/definitions/Error'
+                '500':
+                    description: Internal Server Error
+    '/party1/{Search}/{Size}/{Page}':
+        get:
+            tags:
+            - Party
+            summary: search the party
+            description: Search a party using the given payload.
+            operationId: searchParty
+            consumes:
+            - application/json
+            produces:
+            - application/json
+            parameters:
+            - $ref: '#/parameters/Authorization'
+            - $ref: '#/parameters/X-Request-ID'
+            - $ref: '#/parameters/Content-Type'
+            - $ref: '#/parameters/Ocp-Apim-Subscription-Key'
+            - $ref: '#/parameters/Size'
+            - $ref: '#/parameters/Page'
+            - $ref: '#/parameters/Search'
+            responses:
+                '201':
+                    description: 'Party successfully created'
+                    schema:
+                        $ref: '#/definitions/PartySearch'
+                '400':
+                    description: Bad Request
+                    schema:
+                        $ref: '#/definitions/Error'
+                '401':
+                    description: 'Access forbidden, invalid Authorization was used'
+                    schema:
+                        $ref: '#/definitions/Error'
+                '403':
+                    description: Forbidden
+                    schema:
+                        $ref: '#/definitions/Error'
+                '500':
+                    description: Internal Server Error
+
+    '/party/{partyID}':
+        get:
+            tags:
+            - Party
+            summary: Get details of the party identified by the passed party identifier
+            operationId: fetchPartyDetailsById
+            produces:
+            - application/json
+            parameters:
+            - $ref: '#/parameters/Authorization'
+            - $ref: '#/parameters/X-Request-ID'
+            - $ref: '#/parameters/Ocp-Apim-Subscription-Key'
+            - $ref: '#/parameters/partyID'
+            responses:
+                '200':
+                    description: 'Party sucessfully retrieved'
+                    schema:
+                        $ref: '#/definitions/PartyRead'
+                '400':
+                    description: Bad Request
+                    schema:
+                        $ref: '#/definitions/Error'
+                '401':
+                    description: 'Access forbidden, invalid Authorization was used'
+                    schema:
+                        $ref: '#/definitions/Error'
+                '403':
+                    description: Forbidden
+                    schema:
+                        $ref: '#/definitions/Error'
+                '500':
+                    description: Internal Server Error
+        delete:
+            tags:
+            - Party
+            summary: Deactivate the party identified by the passed party identifier
+            operationId: deletePartyDetails
+            parameters:
+            - $ref: '#/parameters/Authorization'
+            - $ref: '#/parameters/X-Request-ID'
+            - $ref: '#/parameters/Ocp-Apim-Subscription-Key'
+            - $ref: '#/parameters/partyID'
+            responses:
+                '204':
+                    description: Party sucessfully deactivated
+                '400':
+                    description: Bad Request
+                    schema:
+                        $ref: '#/definitions/Error'
+                '401':
+                    description: 'Access forbidden, invalid Authorization was used'
+                    schema:
+                        $ref: '#/definitions/Error'
+                '403':
+                    description: Forbidden
+                    schema:
+                        $ref: '#/definitions/Error'
+                '500':
+                    description: Internal Server Error
+
+parameters:
+    Authorization:
+        name: Authorization
+        description: Access token to be passed as a header
+        in: header
+        required: true
+        type: string
+    X-Request-ID:
+        name: X-Request-ID
+        description: 'Format UUID - ID of the request, unique to the call, as determined by the initiating party'
+        in: header
+        required: true
+        type: string
+        format: uuid
+    Content-Type:
+        name: Content-Type
+        description: 'Media type of the body sent to the API. To be set for consumer and producer, supported value is ''application/json''. Defaults to ''application/json'' if not set'
+        in: header
+        required: false
+        type: string
+    Ocp-Apim-Subscription-Key:
+        name: Ocp-Apim-Subscription-Key
+        description: Subscription key which provides access to this API. Found in your profile
+        in: header
+        required: true
+        type: string
+    partyID:
+        name: partyID
+        in: path
+        description: Identifier of the party
+        required: true
+        type: string
+    Search:
+        name: Search
+        in: path
+        description: Search the party using parameters/fields.
+        required: true
+        type: string
+    Size:
+        name: Size
+        in: path
+        description: Pagination size
+        required: true
+        type: string
+    Page:
+        name: Page
+        in: path
+        description: Page Number
+        required: true
+        type: string
+definitions:
+    Party:
+        type: object
+        description: Party
+        properties:
+            basicDetails:
+                $ref: '#/definitions/PartyBasicDetails'
+            enterpriseDetails:
+                $ref: '#/definitions/EnterpriseDetails'
+            personalDetails:
+                $ref: '#/definitions/PersonalDetails'
+    PartyRead:
+        type: object
+        description: Party
+        properties:
+            basicDetails:
+                $ref: '#/definitions/PartyBasicDetailsRead'
+            enterpriseDetails:
+                $ref: '#/definitions/EnterpriseDetails'
+            personalDetails:
+                $ref: '#/definitions/PersonalDetails'
+    PartyUpdate:
+        type: object
+        description: Party
+        properties:
+            basicDetails:
+                $ref: '#/definitions/PartyBasicDetailsUpdate'
+            enterpriseDetails:
+                $ref: '#/definitions/EnterpriseDetails'
+            personalDetails:
+                $ref: '#/definitions/PersonalDetails'
+    PartySummary:
+        type: object
+        description: Party Summary
+        properties:
+            identifier:
+                type: string
+                description: Identifier of the created or updated party.
+                maxLength: 25
+                example: PTY001
+            alternatePartyIdentifier:
+                type: string
+                description: Identifier of the created or updated party in Finastra Equation core. This field would be empty for non-Equation callers.
+                maxLength: 30
+                example: '00001'
+            name:
+                type: string
+                description: Name of the party
+                maxLength: 255
+                example: Mr. Nick M Jonas
+            type:
+                type: string
+                description: Type of the party
+                maxLength: 50
+                example: '1062'
+            uriPath:
+                type: string
+                description: URL of the GET request
+                example: /retail/v1/PTY001
+    UserDefinedFields:
+        type: object
+        title: 'User Defined Fields [UDFs]'
+        description: User defined fields to capture additional attributes
+        properties:
+            name:
+                type: string
+                description: 'Defined name of the user defined attribute as configured in Loan Origination system  '
+                maxLength: 255
+                example: ' '
+            description:
+                type: string
+                description: Description of the user defined field attribute as configured in system
+                maxLength: 255
+                example: ' '
+            isReadOnly:
+                type: boolean
+                description: 'Indicate additional data for fetch operation, if marked as true.Valid values are- (true/false)'
+                example: false
+            dataType:
+                type: string
+                description: Data type of the user defined field
+                maxLength: 20
+                example: ' '
+            value:
+                type: object
+                description: Value passed for the user defined field
+                example: ' '
+    AddressDetail:
+        type: object
+        title: Address Detail
+        description: Address Details of the Party
+        required:
+        - addressType
+        - fromDate
+        properties:
+            addressType:
+                description: |-
+                    Address Type field allows to record various different address types that can be associated with the party.
+                      The code definition is ADDRESSTYPES.
+                      The possible codes are as follows
+                      WK - Work Address
+                      TT - Term-time Address
+                      TR - Trading Address
+                      RO - Registered Office
+                      HM - Home Address
+                      DF – Default
+                      3 - Correspondence Address
+                type: string
+                maxLength: 50
+                example: '3'
+            addressTypeDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: It is the description of address type in user locale.
+                example: Correspondence Address
+            addressLine1:
+                type: string
+                description: Address Line details - Line 1
+                maxLength: 256
+                example: Flat No 203
+            addressLine2:
+                type: string
+                description: Address Line details - Line 2
+                maxLength: 256
+                example: A wing
+            addressLine3:
+                type: string
+                description: Address Line details - Line 3
+                maxLength: 256
+                example: Mindspace Building
+            addressLine4:
+                type: string
+                description: Address Line details - Line 4
+                maxLength: 256
+                example: London W2 6BD
+            addressLine5:
+                type: string
+                description: Address Line details - Line 5
+                maxLength: 256
+                example: ' '
+            addressLine6:
+                type: string
+                description: Address Line details - Line 6
+                maxLength: 256
+                example: ' '
+            addressLine7:
+                type: string
+                description: Address Line details - Line 7
+                maxLength: 256
+                example: ' '
+            addressLine8:
+                type: string
+                description: Address Line details - Line 8
+                maxLength: 256
+                example: ' '
+            addressLine9:
+                type: string
+                description: Address Line details - Line 9
+                maxLength: 256
+                example: ' '
+            townOrCity:
+                type: string
+                description: it is the town or city name where the employer is present
+                maxLength: 50
+                example: London
+            stateOrProvince:
+                description: it is the state or province name where the employer is present
+                type: string
+                maxLength: 50
+                example: LND
+            stateOrProvinceDescription:
+                description: Description of state of province in user locale
+                type: string
+                maxLength: 255
+                readOnly: true
+                example: London
+            country:
+                type: string
+                description: It is the Country as per the address of the employer. ISO code of the country in ISO 3166 Alpha 3 format.
+                minLength: 3
+                maxLength: 3
+                example: GBR
+            countryDescription:
+                type: string
+                description: Description of Country in user locale
+                maxLength: 255
+                readOnly: true
+                example: United Kingdom
+            addressStatus:
+                type: string
+                maxLength: 50
+                description: |-
+                    This denotes the status or the address. These are Generic Code and can be configured at implementation. These code are defined under the code definition PARTYADDRESSSTATUS.
+                          The possible of values are
+                               •  LIVINGWITHPARENT  -  Living with Parent
+                               •  LIVINGWITHPARTNER -  Living with Partner
+                               •  LODGER-Lodger
+                               •  LEASING-Leasing
+                               •  OWNER - Owner
+                               •  RENTED-Rented
+                example: LIVINGWITHPARENT
+            addressStatusDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for AddressStatus in user locale
+                example: Living with parents
+            postCode:
+                type: string
+                description: Zip or postal Code  Could be Mandatory based on system configuration for party
+                example: 560028
+                maxLength: 20
+            fromDate:
+                type: string
+                format: date
+                description: Valid to date for the address. Acceptable date format yyyy-MM-dd
+                example: '2016-02-16'
+            toDate:
+                type: string
+                format: date
+                description: Valid to date for the address. Acceptable date format yyyy-MM-dd
+                example: '2018-02-18'
+            isDefault:
+                type: boolean
+                description: At least one address must be provided for communication
+                example: true
+            dunsNumber:
+                type: string
+                description: Physical location of the employer. Specific to UK market and applicable for 'enterprise' type party
+                maxLength: 20
+                example: 80-473-5132
+            principalContact:
+                type: string
+                description: Principal contact for the given address
+                maxLength: 50
+                example: Calvin
+            userDefinedFields:
+                type: array
+                description: Attributes that capture all the additional required details
+                items:
+                    $ref: '#/definitions/UserDefinedFields'
+    ContactDetail:
+        type: object
+        title: Contact Detail
+        required:
+        - contactMethod
+        - contactType
+        description: Contact details of the party
+        properties:
+            contactMethod:
+                type: string
+                maxLength: 50
+                description: |-
+                    It is the Method of Contact. The API can receive more than one contact. The first contact entered will be marked as Default Contact for the Party. The preference order of the method considered will be based on the order of input. The list of possible values include
+                       •  EMAIL - Email
+                       •  TELEPHONE - Telephone
+                       •  SMS - Mobile
+                       •  POST - Post
+                       •  FAX - Fax
+                       •  TELEX - Telex
+                example: SMS
+            contactMethodDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for ContactMethod in user locale
+                example: Email
+            contactType:
+                type: string
+                maxLength: 50
+                description: |-
+                    It is the Contact type within each contact method. The list of possible values include
+                      EMAIL
+                       •  WK - Work Address
+                       •  HM- Home Address
+                       •  TELEPHONE
+                       •  DAYTIME - Work
+                       •  EVENING - Personal
+                       •  SMS
+                       •  BUSINESSMOBIL - Work
+                       •  PERSONALMOBILE - Personal
+                       •  POST
+                       •  BUSINESS - Work
+                       •  PERSONAL- Personal
+                       •  FAX
+                       •  FAXPERSONAL - Personal
+                       •  FAXWORK - Work
+                       •  TELEX
+                       •  TELEXPERSONAL - Personal
+                       •  TELEXWORK - Work
+                example: PERSONALMOBILE
+            contactTypeDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for ContactType in user locale
+                example: Home Address
+            isdCode:
+                type: string
+                maxLength: 5
+                description: It is used to capture the ISD Code for each contact method. A valid ISD code must be passed through the API. A regular expression can be configured for this field
+                example: 91
+            areaCode:
+                type: string
+                description: 'It is used to capture the Area code for Telephone, Mobile, Fax and Telex. A regular expression can be configured for this field'
+                maxLength: 25
+                example: 080
+            contactValue:
+                type: string
+                description: 'Based on the Contact Type, this field is used to capture the Contact Number/ Email'
+                maxLength: 256
+                example: 9762656362
+            contactName:
+                type: string
+                description: It is the Name of the Contact person in the company. This field is applicable for Enterprise Parties only.
+                maxLength: 256
+                example: Savio
+            contactPosition:
+                type: string
+                description: It is the position of the Contact person in the company. This field is applicable for Enterprise Parties only.
+                maxLength: 256
+                example: General Manager
+            fromDate:
+                type: string
+                format: date
+                description: It is the date from which the contact details are applicable .
+                example: '2018-10-31'
+            orderOfPref:
+                description: Preference Order of contact Number. This is generated by the system, in the order of contacts given
+                readOnly: true
+                example: 1
+            useForContact:
+                type: boolean
+                description: It is a Flag to indicate the preferred contact method. The valid values are true/false. More than 1 contact value can be selected for the use of contacting
+                example: true
+            userDefinedFields:
+                type: array
+                description: Attributes that capture all the additional required details
+                items:
+                    $ref: '#/definitions/UserDefinedFields'
+    DocumentDetail:
+        type: object
+        title: Document Detail
+        description: Document details of the party
+        properties:
+            documentCategory:
+                type: string
+                maxLength: 50
+                description: 'It is used to capture the Document Category. The list of valid values include ID Proof, Address Proof etc. These are generic codes and can be added at the bank implementation. The document category codes are added under the code definition DOCCAT'
+                example: IDPROOF
+            documentCategoryDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for DocumentCategory in user locale
+                example: Identification Proof
+            documentType:
+                type: string
+                maxLength: 50
+                description: 'It is the Document Type within each document category. The list of valid values include Pan Card, Driving License etc. These are generic codes and can be added at the bank implementation level. The document type codes are added under the code definition DOCTYPE'
+                example: DRIVER
+            documentTypeDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for DocumentType in user locale
+                example: Driving License
+            documentReference:
+                type: string
+                description: It is the unique Reference ID of each document.
+                maxLength: 100
+                example: FGC73632
+            documentIssueAuthority:
+                type: string
+                description: It is Issuing Authority for each document.
+                maxLength: 50
+                example: Passport Office
+            countryOfIssue:
+                type: string
+                description: 'It is used to capture the Country of Issue for each document. The country is captured in ISO 3166, Alpha 3 Code format'
+                minLength: 3
+                maxLength: 3
+                example: IND
+            countryOfIssueDescription:
+                type: string
+                description: It is the description of Country of Issue in user Locale
+                maxLength: 255
+                readOnly: true
+                example: India
+            isDocumentVerified:
+                type: boolean
+                description: It is used to capture if the Document is Verified. The valid values are True/False. This flag is used to check if the given documents has been validated by bank official
+                example: 'true'
+            validToDate:
+                type: string
+                format: date
+                description: It is the date upto which the documents are valid
+                example: '2022-09-26'
+            validFromDate:
+                type: string
+                format: date
+                description: It is the date from which the documents are valid
+                example: '2018-10-31'
+            imageId:
+                type: string
+                maxLength: 100
+                description: It is the unique Image ID maintained in the 3rd party document management system
+                example: '11669b8e795a02Xj'
+            userDefinedFields:
+                type: array
+                description: Attributes that capture all the additional required details
+                items:
+                    $ref: '#/definitions/UserDefinedFields'
+    ExternalCreditRatingDetails:
+        type: object
+        title: External Credit Rating Details
+        description: Credit rating Details for the Party
+        properties:
+            ratingAgency:
+                type: string
+                maxLength: 50
+                description: |-
+                    External credit rating agencies - company that assigns credit ratings, which rate a debtors ability to pay back debt by making timely principal and interest payments and the likelihood of default. For example – Moody’s, Standard & Poor’s etc Default value available out of the box
+                     •  MOODY – Moody's
+                     •  SANDPLONG – Standard & Poor's Long term
+                     •  SANDPSHORT – Standard & Poor's Short term'
+                example: Moodys
+            ratingAgencyDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: '-> edit Risk Weightage. The list of values available out of the box are High Medium Low'
+                example: Moody's rating agency
+            externalCreditRating:
+                type: string
+                maxLength: 50
+                description: |-
+                    These are the External Credit rating corresponding to credit rating agency. These can be configured as per the bank/business needs. Default values are
+                          Moody's
+                            A Long
+                            Aa Long
+                            Aaa Long
+                            Baa Long
+                            C - Long DEFAULT
+                            P-1 Short
+
+                          Standard and Poor's long term
+                            A
+                            AA
+                            AAA
+                            BBB
+
+                          Standard and Poor's short term
+                            A-1
+                            D - DEFAULT
+                example: ALONG
+            externalCreditRatingDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for ExternalCreditRating in user locale
+                example: AAA
+            externalRiskRatingCountry:
+                type: string
+                description: External Risk Country in ISO Alpha 3 format
+                minLength: 3
+                maxLength: 3
+                example: IND
+            externalRiskRatingCountryDescription:
+                type: string
+                description: External Risk Country in ISO 3166 Alpha 3 format
+                maxLength: 255
+                readOnly: true
+                example: India
+            externalCreditRatingEffectiveDate:
+                type: string
+                maxLength: 10
+                format: date
+                description: External Credit Rating Effective Date. Acceptable date format yyyy-MM-dd
+                example: '2018-01-01'
+            externalCreditRatingExpiryDate:
+                type: string
+                maxLength: 10
+                format: date
+                description: External Credit Rating Expiry Date. Acceptable date format yyyy-MM-dd
+                example: '2020-12-03'
+            externalCreditRatingDetailsList:
+                type: object
+                description: This section contains External Credit Rating Details for the Party. Multiple external rating details corresponding to different credit rating agencies can be captured.
+            userDefinedFields:
+                type: array
+                description: Attributes that capture all the additional required details
+                items:
+                    $ref: '#/definitions/UserDefinedFields'
+    EmploymentDetail:
+        type: object
+        title: Employment Detail
+        description: It captures the Employment Details of a Party
+        properties:
+            jobTitle:
+                type: string
+                maxLength: 50
+                description: It is the Job Title which the Party holds at work. This can be configured by the bank under the Code definition EMPTITLE.
+                example: BUSANALYST
+            jobTitleDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for JobTitle in user locale
+                example: Business Analyst
+            nameOfTheEmployer:
+                type: string
+                description: It is the Name of the Employer at which the Party is employed
+                maxLength: 256
+                example: David
+            employeeId:
+                type: string
+                description: It is Employee ID of the Party
+                maxLength: 50
+                example: 711804
+            jobStartDate:
+                type: string
+                format: date
+                description: It is the start date of the Job at the employer’s firm
+                example: '2018-01-01'
+            jobFinishDate:
+                type: string
+                format: date
+                description: It is the finish date of the Job at the employer’s firm
+                example: '2020-02-12'
+            employerAddressDetails:
+                description: It is the address of the employer. Multiple addresses can be captured for each employer
+                items:
+                    $ref: '#/definitions/AddressDetail'
+                maxItems: 1
+            employerPhoneNum:
+                type: string
+                description: It is the Phone Number of the Employer
+                maxLength: 20
+                example: 080404999
+            grossAnnualSalary:
+                type: number
+                description: It is the Employee’s Gross Annual Salary
+                example: 30000
+            grossAnnualSalaryCurrencyCode:
+                type: string
+                description: ISO Currency code for salary
+                maxLength: 3
+                example: EUR
+            paymentFrequency:
+                type: string
+                maxLength: 50
+                description: |-
+                    It is the payment frequency of the Salary. This is define in the code definition PARTYFREQUENCY. The list of possible values
+                    •  DAILY - Daily
+                    •  FOR - Fortnightly
+                    •  HYRLY - Half Yearly
+                    •  MONTHLY - Monthly
+                    •  NONE - None
+                    •  QTLY - Quarterly
+                    •  WEEK - Weekly
+                    •  YRLY - Yearly
+                example: MONTHLY
+            paymentFrequencyDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for PaymentFrequency in user locale
+                example: Monthly
+            paymentMethod:
+                type: string
+                maxLength: 50
+                description: |-
+                    It is the mode of Salary Payment. It is defined in the code definition FUNDMETHOD. It's possible values are
+                    •  ACCDEBT - Account Debit
+                    •  CHEQUE - Cheque
+                    •  CASH - Cash
+                    •  CUSTACCOUNT - Customer Account
+                    •  NOSTRO - Nostro
+                example: CUSTACCOUNT
+            paymentMethodDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for PaymentMethod in user locale
+                example: Customer Account
+            employmentType:
+                type: string
+                maxLength: 50
+                description: |-
+                    It is the type of Employment of the Party. It is defined as part of Code Definition EMPTYPE. The list of possible values include Contractor
+                    •  CONTRACTOR - Contractor
+                    •  FULLTIME - Full time
+                    •  MINOR - Minor
+                    •  PARTTIME - Part time
+                    •  SELFEMPLOYED - Self-employed
+                    •  STUDENT - Student
+                    •  TEMPORARY - Temporary
+                    •  UNEMPLOYED - Unemployed
+                    •  VOLUNTARY - Voluntary
+                example: CONTRACTOR
+            employmentTypeDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for EmploymentType in user locale
+                example: Contractor
+            businessType:
+                type: string
+                maxLength: 50
+                description: |-
+                    It is the Business Type of the Party. Configured under the Code Definition EMPBUSINESSTYPE
+                    The possible Values are
+
+                    •  AGRICULTUREHUNTING - Agriculture, hunting and related service activities
+                    •  FORESTRYLOGGING - Forestry, logging and related service activities
+                    •  FISHINGAQUA - Fishing, aquaculture and service activities incidental to fishing
+                    •  COALLIGNITE - Mining of coal and lignite; extraction of peat
+                    •  CRUDEPETORLEUM - Extraction of crude petroleum and natural gas; service activities incidental to oil and gas extraction, excluding surveying
+                    •  URANIUMTHORIUM - Mining of uranium and thorium ores
+                    •  METALORES - Mining of metal ores
+                    •  OTHERMINING - Other mining and quarrying
+                    •  FOODBEVERAGES - Manufacture of food products and beverages
+                    •  TOBACCO - Manufacture of tobacco products
+                    •  TEXTILES - Manufacture of textiles
+                    •  FUR - Manufacture of wearing apparel; dressing and dyeing of fur
+                    •  LEATHER - Tanning and dressing of leather; manufacture of luggage, handbags, saddlery, harness and footwear
+                    •  WOOD - Manufacture of wood and of products of wood and cork, except furniture; manufacture of articles of straw and plaiting  materials
+                    •  PAPER - Manufacture of paper and paper products
+                    •  RECOREDEDMEDIA - Publishing, printing and reproduction of recorded media
+                    •  FUEL - Manufacture of coke, refined petroleum products and nuclear fuel
+                    •  CHEMICALS - Manufacture of chemicals and chemical products
+                    •  RUBBERPLASTIC - Manufacture of rubber and plastics products
+                    •  NONMETALLIC - Manufacture of other non-metallic mineral products
+                    •  BASICMETALS - Manufacture of basic metals
+                    •  FABRICATEDMETALS - Manufacture of fabricated metal products, except machinery and equipment
+                    •  MACHINERY - Manufacture of machinery and equipment n.e.c.
+                    •  OFFICEMACHINERY - Manufacture of office, accounting and computing machinery
+                    •  ELECTRICALMACHINERY - Manufacture of electrical machinery and apparatus n.e.c.
+                    •  COMMUNICATIONEQU - Manufacture of radio, television and communication equipment and apparatus
+                    •  OPTICALINSTR - Manufacture of medical, precision and optical instruments, watches and clocks
+                    •  MOTORVEHICLES - Manufacture of motor vehicles, trailers and semi-trailers
+                    •  TRANSPORTEQU - Manufacture of other transport equipment
+                    •  FURNITUREMANFACTURING - Manufacture of furniture; manufacturing n.e.c.
+                    •  RECYCLING - Recycling
+                    •  ELECTRICALSUPPLY - Electricity, gas, steam and hot water supply
+                    •  WATERCOLLECTION - Collection, purification and distribution of water
+                    •  CONSTRUCTION - Construction
+                    •  SALES - Sale, maintenance and repair of motor vehicles and motorcycles; retail sale of automotive fuel
+                    •  WHOLESALETRADE - Wholesale trade and commission trade, except of motor vehicles and motorcycles
+                    •  RETAILTRADE - Retail trade, except of motor vehicles and motorcycles; repair of personal and household goods
+                    •  HOTELS - Hotels and restaurants
+                    •  LANDTRANSPORT - Land transport; transport via pipelines
+                    •  WATERTRANSPORT - Water transport
+                    •  AIRTRANSPORT - Air transport
+                    •  AUXILIARYTRANSPORT - Supporting and auxiliary transport activities; activities of travel agencies
+                    •  POST - Post and telecommunications
+                    •  FINANCIALINTERMEDIATION - Financial intermediation, except insurance and pension funding
+                    •  INSURANCE - Insurance and pension funding, except compulsory social security
+                    •  AUXILIARYACTIVITIES - Activities auxiliary to financial intermediation
+                    •  REALESTATE - Real estate activities
+                    •  RENTING - Renting of machinery and equipment without operator and of personal and household goods
+                    •  COMPUTERACTIVITIES - Computer and related activities
+                    •  REASEARCHDEV - Research and development
+                    •  OTHERBUSACT - Other business activities
+                    •  PUBLICADMINISTRATION - Public administration and defence; compulsory social security
+                    •  EDUCATION - Education
+                    •  HEALTH - Health and social work
+                    •  SEWAGE - Sewage and refuse disposal, sanitation and similar activities
+                    •  MEMBERSHIPACT - Activities of membership organizations n.e.c.
+                    •  CULTURALACT - Recreational, cultural and sporting activities
+                    •  OTHERSERVCES - Other service activities
+                    •  PRIVATEHOUSEHOLDS - Activities of private households as employers of domestic staff
+                    •  UNDIFFERENTIATEDGOODS - Undifferentiated goods-producing activities of private households for own use
+                    •  UNDIFFERENTIATEDSERVICES - Undifferentiated service-producing activities of private households for own use
+                    •  EXTRATERRITORIALORG - Extraterritorial organizations and bodies
+                example: FORESTRYLOGGING
+            businessTypeDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for BusinessType in user locale
+                example: 'Forestry, logging and related service activities'
+            contractEndDate:
+                type: string
+                format: date
+                description: It refers to the contract end date the Party has with the employer
+                example: '2026-02-16'
+            isCurrent:
+                type: boolean
+                description: 'It is used to indicate if the employer is Current or previous. If this is true, then it means that the employer is current else it is previous'
+            userDefinedFields:
+                type: array
+                description: User Defined Field List
+                items:
+                    $ref: '#/definitions/UserDefinedFields'
+    relationshipDetail:
+        type: object
+        title: Relationship Detail
+        description: It is used to capture the Relationship Details of a party
+        properties:
+            fromDate:
+                type: string
+                format: date
+                description: It is the Relationship From Date i.e. the date from which the relationship has started. It defaults to Business date if not provided.
+                example: '2016-03-16'
+            relatedPartyID:
+                type: string
+                description: It is used to capture the Party ID of the related Parties
+                maxLength: 25
+                example: PTY762
+            relatedPartyName:
+                type: string
+                description: It is the name of the Related Parties
+                maxLength: 255
+                example: Ralph
+            relationshipType:
+                type: string
+                maxLength: 50
+                description: |-
+                    It is the type of relationship that the related parties share. The list of possible values include
+                      Personal
+                        • Father/Son
+                        • Husband/Wife
+                        • Brother/Sister
+                      Enterprise
+                        • Accountant/Enterprise
+                        • Signatory/Enterprise
+                example: FATHER@SON
+            relationshipTypeDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: It is the description of relationship type in user locale.
+                example: ' '
+            relationshipPercentage:
+                type: number
+                description: |-
+                    % of relationship in case of Enterprise Parties. This is applicable in case of Enterprise party relationships and should be  < 100.
+                     For example - For relationships like - Parent Company/Subsidiary Company, percentage can be defined.
+                example: 100
+            relationshipNarrative:
+                description: It is the Narrative for the relationship
+                type: string
+                maxLength: 256
+            userDefinedFields:
+                type: array
+                items:
+                    $ref: '#/definitions/UserDefinedFields'
+    FatcaDetail:
+        type: object
+        title: FATCA Details
+        description: FATCA Details for the Party
+        properties:
+            reportingType:
+                type: string
+                maxLength: 50
+                description: Reporting Type for Foreign tax.  Possible Values FATCA CRS
+                example: FATCA
+            reportingTypeDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for ReportingType in user locale
+                example: Foreign Account Tax Compliant ACT
+            taxClassification:
+                type: string
+                maxLength: 50
+                description: |-
+                    Categorization of an Entity for FATCA reporting purpose. Possible values are
+                    • PHYSICALPERSON-Physical Person
+                    • FFI-Foreign Financial Institution
+                    • NFE-Non-financial Entity
+                example: FFI
+            taxClassificationDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for TaxClassification in user locale
+                example: Foreign Financial Institution
+            taxSubClassification:
+                type: string
+                maxLength: 50
+                description: |-
+                    Sub classification of the entity for FATCA reporting purpose
+                          Physical Person
+                            •  USPERSONPARTICIPATING - US Person - Participating
+                            •  USPERSONNONPARTICIPATE - US Person - Non-Participating
+                            •  NONUSPERSONPARTICIPATE - Non-US Person - Participating
+                            •  NONUSPERSONNONPARTICIPATE - Non-US Person - Non-Participating
+                          Foreign Financial Institution
+                            •  PARTICIPATINGOWNGIIN - Participating - Own GIIN
+                            •  PARTICIPATINGWITHOUTGIIN - Participating - Without GIIN
+                            •  PARTICIPATINGWITHSOMEGIIN - Participating- With someone else's GIIN
+                            •  NONPARTICIPATING - Non-participating
+                            •  OWNDOCUMENTFF - Owner Document FFI
+                            •  UNKNOWNFFI - Unknown
+                          Non-financial Entity
+                            •  DIRECTREPORTNFENONPARTICIPATE - Direct Reporting NFFE - Non-Participating
+                            •  DIRECTREPORTNFEPARTICIPATE - Direct Reporting NFFE - Participating
+                            •  USOWNNFENONPARTICIPATING - U.S. Owned Passive NFFE - Non-Participating
+                            •  USOWNNFEPARTICIPATING- U.S. Owned Passive NFFE - Participating
+                            •  UNKNOWNNFE - Unknown
+                example: USPERSONPARTICIPATING
+            taxSubClassificationDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for TaxSubClassification in user locale
+                example: US Person - Participating
+            giin:
+                type: string
+                description: Global Intermediary Identification Number can use it to identify themselves to withholding agents and tax administrators for FATCA reporting purposes
+                maxLength: 50
+                example: B63QY3.99999.SL.356
+            tin:
+                type: string
+                description: Taxpayer Identification Number (TIN) is an identifying number used for tax
+                maxLength: 50
+                example: AB-1234567
+            foreignCountryofTax:
+                type: string
+                description: 'ISO Country Code.It is ISO 3166, Alpha 3 Code'
+                minLength: 3
+                maxLength: 3
+                example: IND
+            foreignCountryofTaxDescription:
+                type: string
+                description: Description of Foreign Country of Tax Description in user locale
+                maxLength: 255
+                readOnly: true
+                example: India
+            reportingStatus:
+                type: string
+                maxLength: 50
+                description: |-
+                    Reporting status for the entity that will be used for FATCA reporting purposes
+                    •  RECALCITRANT - Recalcitrant
+                    •  CONSENTRECEIVED - Consent Received
+                    •  PENDING - Pending
+                    •  EXEMPTED - Exempted
+                example: CONSENTRECEIVED
+            reportingStatusDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for ReportingStatus in user locale
+                example: Consent Received
+            userDefinedFields:
+                type: array
+                description: Attributes that capture all the additional required details
+                items:
+                    $ref: '#/definitions/UserDefinedFields'
+    LineOfBusiness:
+        type: object
+        title: Line Of Business
+        description: Line Of Business
+        properties:
+            lineOfBusiness:
+                type: string
+                maxLength: 50
+                description: |-
+                    Indicates the line of business to which the party details need to be sent depending upon client/business needs. For example – Core Banking, Digital Channel etc.
+                          Following are different line of businesses maintained in the system
+                           •  COREBANKING – Core Banking
+                           •  DIGICHANNELS – Digital Channels
+                           •  CORPCHANNELS – Corporate Channels
+                           •  TRADEFIN - Trade Finance
+                           •  TREASURYFO - Treasury
+                           •  COMRLENDING - Commercial Lending
+                           •  RISK - Risk
+                           •  INSIGHT – Insights
+                           •  CASHMGMT – Cash Management
+                example: COREBANKING
+            lineOfBusinessDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for LineOfBusiness in user locale
+                example: Core Banking
+            userDefinedFields:
+                type: array
+                description: Attributes that capture all the additional required details
+                items:
+                    $ref: '#/definitions/UserDefinedFields'
+    MainBusinessActivity:
+        type: object
+        title: Main Business Activity
+        description: It is used to capture the Main Business Activity of the enterprise company
+        properties:
+            isMainActivity:
+                type: boolean
+                description: It is used to indicate if this is the main business of the enterprise
+                example: true
+            industrySector:
+                type: string
+                maxLength: 50
+                description: |-
+                    It is the Industry sector which the enterprise services.The industry sector codes are definied under the code definition PARTYINDSEC.
+                      The list of possible values include
+                      •  AGRIBUSINESS - Agribusiness
+                      •  AIRCRAFTAEROSPACE - Aircraft & Aerospace
+                      •  AIRLINESAIRFREIGHT - Airlines & Airfreight
+                      •  APPARELFOOTWEAR - Apparel and Footwear
+                      •  BROADCASTING - Broadcasting
+                      •  BROKSECURITYCOMMODITY - Brokerage,Security & Commodity
+                      •  BUILDINGMATERIALS - Building Materials
+                      •  CABLESERVICES - Cable and Other Pay TV Services
+                      •  COALMINING - Coal Mining
+                      •  COMMERCIALBANKS - Commercial Banks
+                      •  COMPOFCEQUP - Computers & Office Equipment
+                      •  CONSTRUCTION - Construction
+                      •  EATDRINKPLACES - Eating and Drinking Places
+                      •  ELECTCOMPONENTS - Electronic Components
+                      •  ELECTEQUIPMENT - Electrical Equipment
+                      •  ENTERTAINMENT - Entertainment
+                      •  FINCOMPANIES - Finance Companies
+                      •  FOODWHLSALERETL - Food Wholesale and Retail
+                      •  FOREIGNBANKS - Foreign Banks
+                      •  FURNANDFIXT - Furniture and Fixtures
+                      •  GOVTFEDSTATELCL - Governments,Federal and State & Local
+                      •  HEALTHSERVICES - Health Services
+                      •  HOTELS - Hotels
+                      •  HOUSEHLDAPP - Household Appliances
+                      •  INDCHEMICALS - Industrial Chemicals
+                      •  INDCONGLOMRTS - Industrial Conglomerates
+                      •  INDIVIDUALS - Individuals
+                      •  INSURANCE - Insurance
+                      •  LUMBERANDWOOD - Lumber and Wood
+                      •  MACHINECONST - Machinery,Construction
+                      •  MACHINEINDUST - Machinery,Industrial
+                      •  METALFABRICATING - Metal Fabricating
+                      •  METALSFERROUS - Metals, Ferrous
+                      •  METALSNONFERROUS - Metals, Nonferrous
+                      •  MISCMANUFACSERV - Miscellaneous Manufacturing & Services
+                      •  MOTRVEHICPARTS - Motor Vehicles, Tires & Parts
+                      •  NATRLGASTRANS - Natural Gas Transmission
+                      •  NONFOODRTLTRADE - Non Food Retail Trade
+                      •  NONUSGOVCENTLGOVAGNC - Non-U.S. Government & Central Gov't Agencies
+                      •  OILANDGASEXTN - Oil and Gas Extraction
+                      •  OTRFININSTITUN - Other Financial Institutions
+                      •  OTRFRGNMULTILATINST - Other Foreign and Multilateral Institutions
+                      •  OTRNONUSGOVEXP - Other Non-U.S. Government Exposures
+                      •  PETROLREFINING - Petroleum Refining
+                      •  PHARMACEUTICALS - Pharmaceuticals
+                      •  PLASTICPRODUCTS - Plastic Products
+                      •  PPRANDPPRBRD - Paper and Paperboard
+                      •  PRECISIONINST - Precision Instruments
+                      •  PRINTING - Printing
+                      •  PROCDFOODSBEV - Processed Foods and Beverages
+                      •  PUBLISHING - Publishing
+                      •  RAILRDTRANSP - Railroad Transportation
+                      •  REALESTATE - Real Estate
+                      •  SERVBUSNS - Services, Business
+                      •  SHIPBUILDING - Shipbuilding
+                      •  SHIPPING - Shipping
+                      •  TELEPHNESERV - Telephone Services
+                      •  TEXTILES - Textiles
+                      •  THRIFTSCREDUNIONS - Thrifts & Credit Unions
+                      •  TOBACCO - Tobacco
+                      •  TOILETRIESCOSM - Toiletries and Cosmetics
+                      •  TRANSPORTEQUIP - Transportation Equipment, Other
+                      •  TRUCKWAREHOUSING - Trucking & Warehousing
+                      •  USFEDSPONSAGNC - U.S. Federally-Sponsored Agencies
+                      •  USGOVTFEDAGNC - U.S. Government & Federal Agencies
+                      •  UTILITIES - Utilities
+                example: AIRCRAFTAEROSPACE
+            industrySectorDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for IndustrySector in user locale
+                example: 'Aircraft & Aerospace'
+            businessActivity:
+                type: string
+                maxLength: 50
+                description: |-
+                    It is the Business Activity under the Industry sectors.
+                    The values are defined under code definition is PARTYINDSEC
+                    and the industry sector that is passed.
+                example: AIRCRFTAEROSPC_0004
+            businessActivityDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for business activity in user locale
+                example: Aircraft Engines & Engine Parts
+            businessFocus:
+                type: string
+                maxLength: 50
+                description: |-
+                    It is the Business Focus of the enterprise. The list of possible values
+                    • IMPORT - Import
+                    • EXPORT - Export
+                    • BOTH  - Both
+                example: IMPORT
+            businessFocusDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for BusinessFocus in user locale
+                example: Import
+            businessType:
+                type: string
+                maxLength: 50
+                description: |-
+                    It is the Business Type of the enterprise. The list of possible values include
+                    • AFFINITY  - Affinity
+                    • FRANCHISE - Franchise
+                example: AFFINITY
+            businessTypeDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for BusinessType in user locale
+                example: Affinity
+            lastAudit:
+                type: string
+                format: date
+                description: It is the Last audit date of the enterprise. It defaults to business date if not provided
+    TradeNameDetails:
+        type: object
+        title: Trade Name Details
+        description: It is the detailed list of the trading names of the enterprise
+        properties:
+            registrationNumber:
+                type: string
+                description: It is the registration number with which the company is registered in a particular country
+                maxLength: 50
+                example: AED8237
+            registeredTradingName:
+                type: string
+                description: It is the Trading Name as per the registration of the enterprise
+                maxLength: 100
+                example: RELCORP
+            registrationAuthority:
+                type: string
+                description: It is the authority who has done the Registration for the   enterprise
+                maxLength: 50
+                example: Ministry of Corporate Affairs
+            placeofRegistration:
+                type: string
+                description: 'It is the country of Registration. It is ISO 3166, Alpha 3 Code'
+                maxLength: 3
+                example: IND
+            placeofRegistrationDescription:
+                type: string
+                description: Description of Place of Registration in user locale
+                maxLength: 255
+                readOnly: true
+                example: India
+            nameType:
+                type: string
+                maxLength: 50
+                description: |-
+                    It is used to capture the different name types for trading by an enterprise party.  The list of possible values include
+                    • LEGALNAME - Legal Name
+                    • TRADINGNAME - Trading Name
+                example: LEGALNAME
+            nameTypeDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for NameType in user locale
+                example: Legal Name
+            registrationDate:
+                type: string
+                format: date
+                description: It is the Registration Date in the format yyyy-MM-dd
+                example: '2012-03-25'
+            dateRecorded:
+                type: string
+                format: date
+                description: '2018-03-25'
+            registrationVerified:
+                type: boolean
+                description: It is the status of Registration for the Enterprise. If the value is true then its registration is verified else not
+                example: true
+    GstDetails:
+        type: object
+        title: GST Details
+        description: It is used to capture the list of GST Details
+        properties:
+            countryGST:
+                type: string
+                description: 'It is the country of where the party is liable to pay Goods & Service Tax. It is ISO 3166, Alpha 3 Code'
+                minLength: 3
+                maxLength: 3
+                example: IND
+            countryGSTDescription:
+                type: string
+                description: Description of Country of Goods & Service Tax in user locale
+                readOnly: true
+                maxLength: 255
+                example: India
+            gstRegistrationNumber:
+                type: string
+                description: 'It is the Goods & Service Tax Registered number. If IsGSTRegistered indicator is true,then it is mandatory to provide the GST number'
+                maxLength: 50
+                example: YFB1293
+    PreviousOrOtherNameDetail:
+        type: object
+        title: Previous Or Other Name Details
+        description: It is used to capture the details of Previous or Other Name Details. This is a configurable field
+        properties:
+            title:
+                type: string
+                maxLength: 50
+                description: |-
+                    It is the prefix attached to a Personal Party’s name. The list of possible values include
+                     •  001 - Mr.
+                     •  002_1 - Mrs.
+                     •  003 - Miss
+                     •  004 - Dr.
+                     •  005 - Prof.
+                     •  009 - Master
+                     •  010 – Captain
+                     •  011 - Not Known
+                example: 001
+            titleDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: It is the description of title in user locale
+                example: Mr.
+            firstName:
+                type: string
+                description: It is the First Name of the Party (any previous name)
+                maxLength: 60
+                example: Nick
+            MiddleName:
+                type: string
+                description: It is the Middle Name of the Party (any previous name)
+                maxLength: 60
+                example: M
+            lastName:
+                type: string
+                description: It is the Last Name of the Party (any previous name)
+                maxLength: 60
+                example: Jonas
+            nameType:
+                type: string
+                maxLength: 50
+                description: |-
+                    It is used for capturing the name type for previous/other name.  The list of possible values include
+                    •  BIRTH - Name at Birth
+                    •  DEFAULT - Default Name
+                    •  KNOWNNAME - Known Name
+                    •  MAIDEN - Maiden Name
+                    •  LOCALNAME - Local Language Name
+                example: DEFAULT
+            nameTypeDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for NameType in user locale
+                example: Default Name
+    EnterpriseDetails:
+        type: object
+        title: Enterprise Party Details
+        description: Details of the enterprise party
+        required:
+        - countryOfRegistration
+        - enterpriseName
+        - registrationNumber
+        properties:
+            enterpriseName:
+                type: string
+                description: It is the name of the Enterprise company
+                maxLength: 255
+                example: RELIANCE
+            registrationNumber:
+                type: string
+                description: It is the registration number with which the company is registered in a particular country
+                maxLength: 50
+                example: INMA1958ENT
+            countryOfRegistration:
+                type: string
+                description: 'The country where the enterprise of the party is registered.It is ISO 3166, Alpha 3 Code'
+                minLength: 3
+                maxLength: 3
+                example: IND
+            countryOfRegistrationDescription:
+                type: string
+                description: The description of the country of Registration in user locale
+                maxLength: 255
+                readOnly: true
+                example: India
+            stateOfRegistration:
+                type: string
+                description: The list of states is populated based on the Country of Registration. It is a configurable field
+                maxLength: 50
+                example: KA
+            stateOfRegistrationDescription:
+                type: string
+                description: Description of state of registration in user locale
+                maxLength: 255
+                readOnly: true
+                example: Karnataka
+            nonResidentLicensePermitNum:
+                type: string
+                description: It is used to capture the permit number/ license number for non-residents
+                maxLength: 256
+                example: PERMIT672
+            nonResidentLicensePermitIssueDate:
+                type: string
+                format: date
+                description: It is the issuing date of the Non-Resident License/ Permit Number in yyyy-MM-dd
+                example: '2016-03-20'
+            nonResidentLicensePermitExpiryDate:
+                type: string
+                format: date
+                description: It is the expiry date of the Non-Resident License/ Permit Number in yyyy-MM-dd
+                example: '2023-10-02'
+            dateFormed:
+                type: string
+                format: date
+                description: The date on which the enterprise was formed (this is not the Incorporation Date) Thisis normally the date on which a resolution has been passed by the Directors to formthe enterprise. Must be a valid date and can be current business date or a date beforetoday dd/mm/yyyy.
+                example: '2016-10-02'
+            dateIncorporated:
+                type: string
+                format: date
+                description: It is the date on which the company is legally registered at Companies House. This date is displayed on the company's certificate of incorporation. The format is dd/mm/yyyy. It is a configurable field
+                example: '2016-10-02'
+            dateCommencedTrading:
+                type: string
+                format: date
+                description: It is the date on which the enterprise started trading or commenced business. The format is dd/mm/yyyy. It is a configurable field
+                example: '2016-10-02'
+            countryTaxDomicle:
+                type: string
+                description: 'It is the country in which the enterprise is domiciled for tax payment. It is ISO 3166, Alpha 3 Code'
+                minLength: 3
+                maxLength: 3
+                example: IND
+            countryTaxDomicleDescription:
+                type: string
+                description: Description of the counry of tax domicile in user locale
+                maxLength: 255
+                readOnly: true
+                example: India
+            enterpriseStatus:
+                type: string
+                description: It is the status of an Enterprise. The list of possible values include STARTUP- Startup OVERSEAS - Established Overseas INCOUNTRY- Established in this Country
+                maxLength: 50
+                example: STARTUP
+            numOfBeneficialOwners:
+                type: integer
+                description: 'It is used to capture the number of beneficial owners, partners or principal shareholders, for example, those with a share of above 20% or 25%. It is a configurable field'
+                maxLength: 3
+                example: 4
+            numOfPrincipalDirectors:
+                type: integer
+                description: It is used to capture the total number of Directors
+                maxLength: 3
+                example: 3
+            numOfSignatories:
+                type: integer
+                description: It is used to capture the total number of Signatories
+                maxLength: 3
+                example: 6
+            isParent:
+                type: boolean
+                description: 'It is used to indicate if the enterprise is a Parent or Subsidiary. If the value is true, then it is a Parent else Subsidiary'
+                example: true
+            parentCountry:
+                type: string
+                description: 'It is the country in which the parent of a subsidiary/ branch is registered. It is ISO 3166, Alpha 3 Code.'
+                maxLength: 3
+                minLength: 3
+                example: IND
+            parentCountryDescription:
+                type: string
+                description: The description of the parent country in user locale.
+                maxLength: 255
+                readOnly: true
+                example: India
+            numOfEmployees:
+                type: integer
+                description: It is the total number of Employees in the company
+                example: 75
+            turnoverCurrencyCode:
+                type: string
+                description: The currency code in which the turnover will be expressed. This is in ISO 4217 format (3 byte)
+                maxLength: 3
+                example: EUR
+            annualTurnover:
+                type: number
+                description: It is Annual turnover of the enterprise. It is a configurable field
+                example: 200000000
+            projectedTurnover:
+                type: number
+                description: It is the projected annual turnover of the enterprise.
+                example: 300000000
+            website:
+                type: string
+                description: It is the Website Address of the enterprise
+                maxLength: 100
+                example: 'https://www.finastra.com'
+            mainBusinessActivityList:
+                type: array
+                description: It is used to capture the Main Business Activity of the enterprise company
+                items:
+                    $ref: '#/definitions/MainBusinessActivity'
+            numOfTradeNames:
+                type: integer
+                description: It is the number of Trading Names of the Enterprise
+                example: 2
+            tradeNameDetailsList:
+                type: array
+                description: It is the detailed list of the trading names of the enterprise
+                items:
+                    $ref: '#/definitions/TradeNameDetails'
+            isGSTRegistered:
+                type: boolean
+                description: It is used to indicate that the enterprise is liable to pay Goods & Service Tax or not
+                example: true
+            gstDetailsList:
+                type: array
+                description: It is used to capture the list of GST Details
+                items:
+                    $ref: '#/definitions/GstDetails'
+            userDefinedFields:
+                type: array
+                description: User defined fields to capture additional attributes
+                items:
+                    $ref: '#/definitions/UserDefinedFields'
+    InternalCreditRatingDetails:
+        type: object
+        title: Internal Credit Rating Details
+        description: This section contains internal credit rating details for the Party
+        properties:
+            internalCreditRating:
+                description: |-
+                    Internal Credit rating of the Party. These values are bank definable.  The list of values available out of the box are
+                      AAA
+                      AA
+                      A
+                      BBB
+                      BB
+                      B
+                      CCC
+                type: string
+                maxLength: 50
+                example: AAA
+            internalCreditRatingDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: It is the description of internal credit rating in user locale.
+                example: AAA
+            internalCreditRiskWeightage:
+                description: |-
+                    Credit Risk Weightage The list of values available out of the box.  This is a text field of data type Numeric the maximum value being 100
+                type: string
+                maxLength: 50
+                example: 100
+            internalRiskRatingCountry:
+                type: string
+                description: 'It is the Risk Country. It refers to the risk of investing or lending in a country, arising from possible changes in the business environment that may adversely affect operating profits or the value of assets in the country Risk. The country is captured in ISO 3166, Alpha 3 Code'
+                minLength: 3
+                maxLength: 3
+                example: IND
+            internalRiskRatingCountryDescription:
+                type: string
+                description: It is the description of internal risk rating country in user locale
+                maxLength: 255
+                readOnly: true
+                example: India
+            internalCreditRatingExpiryDate:
+                type: string
+                format: date
+                description: It is the expiry date of Internal Credit Rating
+                example: '2020-12-31'
+    CreditRating:
+        type: object
+        title: Credit Rating
+        description: Credit Rating
+        properties:
+            internalCreditRatingDetails:
+                $ref: '#/definitions/InternalCreditRatingDetails'
+            externalCreditRatingDetailsList:
+                type: array
+                description: This section contains External Credit Rating Details for the Party. Multiple external rating details corresponding to different credit rating agencies can be captured.
+                items:
+                    $ref: '#/definitions/ExternalCreditRatingDetails'
+    PartyBasicDetails:
+        type: object
+        title: Party Basic Details
+        description: This section captures all the data required for party basic details
+        required:
+        - branchCode
+        - partyCategory
+        - partySubType
+        - partyType
+        properties:
+            branchCode:
+                type: string
+                description: ' It is the Branch Sort Code of the branch in which Party is to be onboarded. For example: Main Branch with Branch sort code – 99999999'
+                maxLength: 8
+                example: 99999999
+            branchName:
+                type: string
+                readOnly: true
+                description: 'Branch Name in user Locale'
+                example: Head Office
+            localityType:
+                type: string
+                maxLength: 50
+                description: |-
+                    Locality context used for Reporting groups. This is not relevant for this API as API is not supporting reporting group. Possible values
+                    LOCALPRIVATE-Local Private
+                    LOCALPUBLIC-Local Public
+                    GLOBAL-Global
+                    This version supports only Local Private
+                example: LOCALPRIVATE
+            localityTypeDescription:
+                type: string
+                maxLength: 255
+                description: 'Description of locality type in user locale'
+                example: 'Local Private'
+            partyID:
+                type: string
+                maxLength: 25
+                description: |-
+                    Unique identifier for the party in Party Management System
+                                (equivalent to CIF id).
+                    This field can be auto-generated based on a configuration. This field must be provided in the input payload only If auto-generate party is set to false.
+                    Usage – this filed is mandatory if Auto-generate party id is set to false
+                example: PTY0001
+            partyType:
+                type: string
+                maxLength: 50
+                description: |-
+                    This defines the type of Party being onboarded/amended. Following values are allowed
+                    1062-Personal
+                    1063-Enterprise
+                    Note - This field cannot be amended .
+                example: '1062'
+            partyTypeDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for LocalityType in user locale
+                example: Personal
+            partySubType:
+                type: string
+                maxLength: 50
+                description: |-
+                    This is the sub-classification of party based on party type.
+                      Following values are available out of the box for
+                      1. Party Type = 1062 (Personal)
+
+                        100 – Individual
+                        110 – Staff
+                        MINOR – Minor
+                        PER004 – Student
+                        PER005 – Pensioner
+                        PER006 – Foreigner
+
+                      2. Party Type = 1063 (Enterprise)
+
+                        ENT001 – Sole Trader
+                        ENT002 – Correspondent Bank
+                        ENT003 – Corporate body
+                        ENT004 – Insurance Company
+                        ENT005 – Limited Liability Partnership
+                        ENT006 – Public Limited Company
+                        ENT007 – Micro Finance
+                        ENT008 – Small Medium Enterprise (SME)
+                        ENT009 – International Organization
+                        ENT010 – Government Institutions
+                        ENT011 – Diplomatic Missions
+                        ENT012 – Cooperatives
+                        ENT013 – Non Government Organisations (NGO)
+                        LTD – Private Limited Company (LTD)
+                example: 100(Personal) LTD(Enterprise)
+            partySubTypeDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for PartySubType in user locale
+                example: Individual
+            partyCategory:
+                type: string
+                maxLength: 50
+                description: |-
+                    Indicates the category to which the party will belong. A party can belong to different category depending upon relation with the Bank. Following categories are allowed
+                     PROSPECT - Prospect
+                     FULL     - Full
+                     ASSOCIATE- Associate
+                     WALKIN   - Walk in
+
+                     PROSPECT – This is the prospect party who may potentially have direct   relationship with the Bank and will subscribe to Bank’s product/services in Future .
+
+                     FULL     – This is the full customer who have established relationship with Bank as customer and are holding product (Account, Deposit, Loan etc.)
+
+                     ASSOCIATE– Associate party is a party associated to the product
+                     subscribed by a Full Party. Associate party may not have direct relationship with Bank but will be associated in different capacity such as Guarantor, Attorney, Legal Advisor etc.
+
+                     WALKIN   - This is the category for the party who don’t have any relationship with the Bank but may come as a walk-in party for some ad-hoc needs.
+
+                example: PROSPECT
+            partyCategoryDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for PartyCategory in user locale
+                example: Prospect
+            partyAlternativeId:
+                type: string
+                description: This fields holds an alternate ID that usually comes from another external system. This is used only for reference purpose. There are no validations on this field
+                maxLength: 50
+                example: '0067'
+            shortName:
+                type: string
+                description: This is the Short Name/Nick Name of the Party. This field can be auto generated based on the configuration.
+                maxLength: 60
+                example: Jos
+            isWithHoldingTaxLiable:
+                type: boolean
+                description: Flag to indicate if the party is liable for Withholding Tax
+                example: true
+            taxExemptionReason:
+                type: string
+                maxLength: 50
+                description: Indicates reason for tax exemption. Possible values are
+                    TAXEXEMPTIONREASON1 – Individual without income TAXEXEMPTIONREASON2 – Individual with income less than taxable threshold TAXEXEMPTIONREASON3 – Pensioner TAXEXEMPTIONREASON4 – Not for Profit Organization (NGO) TAXEXEMPTIONREASON5 – Educational Institution TAXEXEMPTIONREASON6 – Charitable and Religious Organization TAXEXEMPTIONREASON7 – Governmental Entities
+                example: TAXEXEMPTIONSTATUS1
+            taxExemptionReasonDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for TaxExemptionStatus in user locale
+                example: Tax Exemption Status
+            documentCollectionStatus:
+                description: Document Collection Status is given when the document is captured during Onboarding/Maintenance. The 4 possible statuses are as follows
+                    DOCCOLLECTED- Documents collected and validated centrally DOCCOLLECTEDNOTVALIDATED- Documents collected but not validated centrally
+                    PARTIALLYCOLLECTED- Documents partially collected
+                    WITHOUTDOCUMENTATION- Documents not collected
+                type: string
+                maxLength: 50
+                example: DOCCOLLECTED
+            documentCollectionStatusDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: 'It is the description of document collection status in user locale. '
+            chargeFundingAccount:
+                type: string
+                description: Charge Funding Account is account from where charges are collected for a party. This field is only applicablel during PATCH and GET operations
+                maxLength: 35
+                example: 029111000000100
+            relationManager:
+                type: string
+                description: Relationship Manager assigned to Party
+                maxLength: 30
+                example: superit
+            isInternetBankingEnabled:
+                type: boolean
+                description: Internet Banking is associated with the Digital Channels configuration. It accepts Boolean values - true/ false. Default is False (Disabled).
+                example: false
+            isMobileBankingEnabled:
+                type: boolean
+                description: Mobile Banking is associated with the Digital Channels configuration. It accepts Boolean values - true/ false. Default is False (Disabled).
+                example: false
+            languageId:
+                type: string
+                description: 'Preferred Language for customer document and other communications. If no option is selected, then the default bank defined language is used'
+                maxLength: 50
+                example: EN
+            signTxnReference:
+                type: string
+                description: Reference number for transaction(signature)
+                maxLength: 30
+                example: 123PER8JD
+            kycStatus:
+                type: string
+                maxLength: 50
+                description: KYC Status for the party. Allowed status in POST operation 001 - Compliant 003 - Non-Compliant
+                example: '001'
+            kycStatusDescription:
+                type: string
+                maxLength: 256
+                readOnly: true
+                example: 'Description of Kyc Status in user locale'
+            kycExpiryDate:
+                description: KYC Expiry Date gives the duration of KYC validity period. It is calculated based on Party Common Configurations.
+                type: string
+                format: date
+                example: '2021-01-02'
+            isConsolidateStatementRequired:
+                type: boolean
+                description: It captures the customer consent for a consolidated statement of all the accounts held.  It can take Boolean values - true/ false. Default value is FALSE.
+                example: false
+            bicCodes:
+                type: array
+                description: 'Bank Identification Code. It is used to obtain the Name, Country & Address of the Bank.'
+                items:
+                    type: string
+                    maxLength: 20
+                    example: HDFCINBBCOC
+            activeSWIFTCustomer:
+                type: boolean
+                description: 'It is a flag to indicate if the customer is an active SWIFT Customer. Active SWIFT Customer comprises of the SWIFT Address details, with first and second address lines being mandatory'
+                example: true
+            publicPartyStatuses:
+                description: Public Party Status gives the status of the customer external to the bank activities. This is an optional field. There can be more than one public party status at a point of time.
+                type: array
+                items:
+                    $ref: '#/definitions/PublicPartyStatus'
+            addressDetails:
+                type: array
+                description: Address Details of the Party
+                items:
+                    $ref: '#/definitions/AddressDetail'
+            contactDetails:
+                type: array
+                description: Contact Details of the Party
+                items:
+                    $ref: '#/definitions/ContactDetail'
+            documentDetails:
+                type: array
+                description: Document Details of the Party
+                items:
+                    $ref: '#/definitions/DocumentDetail'
+            creditRating:
+                type: array
+                description: Credit rating Details of the Party
+                items:
+                    $ref: '#/definitions/CreditRating'
+            fatcaDetails:
+                type: array
+                description: FATCA Details of the Party
+                items:
+                    $ref: '#/definitions/FatcaDetail'
+            lineOfBusinesses:
+                type: array
+                description: Line of Business for which the party is relevant
+                items:
+                    $ref: '#/definitions/LineOfBusiness'
+            userDefinedFields:
+                type: array
+                description: User defined fields to capture additional attributes
+                items:
+                    $ref: '#/definitions/UserDefinedFields'
+    PartyBasicDetailsUpdate:
+        allOf:
+        - $ref: '#/definitions/PartyBasicDetails'
+        - type: object
+          properties:
+              bankPartyStatus:
+                  description: Bank Party Status gives the status of the customer internal to the bank activities. This is an optional field and this is applicable to patch and get.
+                  type: array
+                  items:
+                      $ref: '#/definitions/BankPartyStatus'
+              segmentCategory:
+                  type: string
+                  description: The segment category can be passed through the API. It is used to indicate the segment of the Party. The value passed in API can be re-calculated and overridden by the system based on a configuration. The segments are bank definable
+                  example: "DEFAULT"
+              segmentCategoryDescription:
+                  type: string
+                  description: 'Description of segmentation in user locale'
+                  example: "Default"
+              segmentEffectiveFrom:
+                  type: string
+                  format: date
+                  description: This is the date from when the segment of the party is in effect. It cannot be less than the business date
+                  example: 2018-01-10
+    PartyBasicDetailsRead:
+        allOf:
+        - $ref: '#/definitions/PartyBasicDetailsUpdate'
+        - type: object
+          properties:
+              partyStatus:
+                  type: string
+                  description: Party Aquisition Status. This will be available in Get. This is a system set field during creation. ACCEPTED – Accepted
+                      DECLINED – Declined
+                      PENDING – Pending
+                  example: ACCEPTED
+                  maxLength: 50
+              partyStatusDescription:
+                  type: string
+                  maxLength: 255
+                  readOnly: true
+                  description: Description for PartyStatus in user locale
+                  example: Accepted
+    PersonalDetails:
+        type: object
+        title: Party Personal Details
+        description: Party Personal Details
+        required:
+        - dateOfBirth
+        - gender
+        properties:
+            dateOfBirth:
+                type: string
+                format: date
+                description: It is the Date of Birth of the Personal Party. The out of box format is yyyy-MM-dd
+                example: '1991-08-22'
+            gender:
+                type: string
+                maxLength: 50
+                description: |-
+                    It is the Gender of the Party. The list of possible values include
+                    001 -Female
+                    002 -Male
+                    003 -Not Known
+                example: '002'
+            genderDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for Gender in user locale
+                example: Male
+            civilStatus:
+                type: string
+                maxLength: 50
+                description: |-
+                    It is the Marital/Civil Status of the Party. The list of possible values include
+                        CIVIL - Civil Partner
+                        WID - Widow/Widower
+                        MINOR - Minor
+                        001 - Single
+                        002 - Married
+                        003_1 - Divorced
+                        004 - Separated
+                        COMLW - Co-habiting
+                    It is a configurable field
+                example: '002'
+            civilStausDescription:
+                type: string
+                maxLength: 255
+                description: It is the description of civil status in user locale.
+                example: Married
+            nationalIdNum:
+                type: string
+                description: It is the National Identifier number for the Party
+                maxLength: 50
+                example: 543521
+            nationalTypeId:
+                type: string
+                maxLength: 50
+                description: |-
+                    It is the National Identifier Type for which we are capturing the unique national ID number.  It is a configurable field.
+                        The list of possible values include
+                      • DRIVER - Driver’s License
+                      • TAXREF - Tax ID
+                example: DRIVER
+            nationalTypeIdDescription:
+                type: string
+                maxLength: 255
+                description: It is the description of national type ID in user locale.
+                example: Driver’s License
+            religion:
+                type: string
+                maxLength: 50
+                description: |-
+                    It is the Religion followed by the Party.
+                    •  RELIGION1 - Christianity
+                    •  RELIGION2 - Islam
+                    •  RELIGION3 - Hinduism
+                    •  RELIGION4 - Sikhism
+                    •  RELIGION5 - Judaism
+                    •  RELIGION6 - Bahaism
+                    •  RELIGION7 - Confucianism
+                    •  RELIGION8 - Jainism
+                    •  RELIGION9 - Shintoism
+                    •  RELIGION10 - Not Applicable
+                example: RELIGION1
+            religionDescription:
+                type: string
+                maxLength: 255
+                description: It is the description of religion in user locale.
+                example: Christianity
+            employmentStatus:
+                type: string
+                maxLength: 50
+                description: |-
+                    It is the status of a worker in a company based on the contract of work or duration of work done. The list of possible values include
+                      001 - Full time
+                      014 - Retired
+                      013 - Long-term unemployed
+                      012 - Not employed
+                      011 - Redundant
+                      010 - Registered disabled
+                      009 - Home maker
+                      008 - Recently retired
+                      007 - Previously employed
+                      006 - Recently redundant
+                      005 - Student
+                      004 - Self-employed
+                      003 - Employed
+                      002 - Part time
+                example: '001'
+            employmentStatusDescription:
+                type: string
+                maxLength: 255
+                description: It is the description of employment status in user locale.
+                example: Full time
+            fathersName:
+                type: string
+                description: It is the Father’s Name of the Party. It is a configurable field
+                maxLength: 100
+                example: David
+            motherMaidenName:
+                type: string
+                description: It is the Mother’s Maiden Name of the Party. It is a configurable field
+                maxLength: 100
+                example: Rose
+            grandFathersName:
+                type: string
+                description: It is the Grand Father’s Maiden Name of the Party. It is a configurable field
+                maxLength: 100
+                example: John
+            isPreviousOrOtherName:
+                type: boolean
+                description: 'It is used to capture multiple names for a Party. This can be used to record any previous names (like change of name due to marriage, divorce, name in local language etc.)'
+                maxLength: 1
+                example: true
+            previousOrOtherNameDetails:
+                type: array
+                description: It is used to capture the details of Previous or Other Name Details. This is a configurable field
+                items:
+                    $ref: '#/definitions/PreviousOrOtherNameDetail'
+                minItems: 1
+            countryCitizen:
+                type: string
+                description: |-
+                    It is the country in which a person is born and to which that party owes allegiance. It is the country by which she/he is entitled to be protected. It is a configurable field.
+                      ISO code of the country in ISO 3166 Alpha 3 format
+                minLength: 3
+                maxLength: 3
+                example: IND
+            countryCitizenDescription:
+                type: string
+                description: Description of the country of Citizen in user locale
+                maxLength:  255
+                readOnly: true
+                example: India
+            countryBirth:
+                type: string
+                description: It is the country in which a party is born. It is a configurable field. ISO code of the country in ISO 3166 Alpha 3 format
+                minLength: 3
+                maxLength: 3
+                example: IND
+            countryBirthDescription:
+                type: string
+                description: Description of the country of Birth in user locale
+                maxLength:  255
+                readOnly: true
+                example: India
+            townBirth:
+                type: string
+                description: It is the town in which a party is born. It is a configurable field free-text field.
+                maxLength: 20
+                example: Bengaluru
+            countryResidency:
+                type: string
+                description: It is the country in which the party resides. It is a configurable field. ISO code of the country in ISO 3166 Alpha 3 format
+                minLength: 3
+                maxLength: 3
+                example: IND
+            countryResidencyDescription:
+                type: string
+                description: Description of the country residency in user locale
+                maxLength:  255
+                readOnly: true
+                example: India
+            residentState:
+                type: string
+                description: It is the state in which the party resides. it is a configurable field
+                maxLength: 50
+                example: KA
+            residentStateDescription:
+                type: string
+                description: Description of resident state in user locale
+                maxLength: 255
+                readOnly: true
+                example: Karnataka
+            residencyStatus:
+                type: string
+                description: |-
+                    It is the Party’s resident status in a country of which he or she is not a citizen. It is a configurable field. The list of possible values include
+                                001 - Non-Resident
+                                002 - Resident
+                                003 - Embassy
+                maxLength: 50
+                example: '002'
+            isTaxPayer:
+                type: boolean
+                description: It is to indicate that the Party is a Tax payer or not
+                example: true
+            taxCountry:
+                type: string
+                description: It is the country where the party is tax resident. The default value is the country of the logged in Branch performing the Party Onboarding. It is a configurable field. ISO code of the country in ISO 3166 Alpha 3 format
+                minLength: 3
+                maxLength: 3
+                example: IND
+            taxCountryDescription:
+                type: string
+                description: Full name for the tax country in user locale
+                maxLength:  255
+                readOnly: true
+                example: India
+            taxIDNumber:
+                type: string
+                description: 'If the Party is a tax payer, then we capture the tax ID number of the party in this field'
+                maxLength: 50
+                example: AEFR3890
+            spouseName:
+                type: string
+                description: It is the name of the Spouse of the Party
+                maxLength: 100
+                example: Andrew
+            numOfDependents:
+                type: integer
+                description: It refers to the number of dependents which the Party has
+                example: 5
+            employmentDetails:
+                type: array
+                description: It captures the Employment Details of a Party
+                items:
+                    $ref: '#/definitions/EmploymentDetail'
+            relationshipDetails:
+                type: array
+                description: It is used to capture the Relationship Details of a party
+                items:
+                    $ref: '#/definitions/relationshipDetail'
+            userDefinedFields:
+                type: array
+                description: User Defined Field List
+                items:
+                    $ref: '#/definitions/UserDefinedFields'
+    PartySearch:
+        type : array
+        title : partySearch
+        description : partySearch
+        items :
+            properties:
+                listOfPersonalDetails:
+                    type: object
+                    items :
+                        $ref: '#/definitions/PersonalDetails'
+
+
+    BankPartyStatus:
+        type: object
+        title: Bank Status of the party
+        description: Bank Party Status.
+        properties:
+            status:
+                type: string
+                maxLength: 50
+                description: |-
+                    Bank Party Status gives the status of the customer internal to the bank activities. This is an optional field. This field is available for display in GET.
+                        The valid values are
+                        •  PASSIVE - Passive
+                        •  001 - Active
+                        •  INACTIVE - Inactive
+                        •  BLOCKED - Blocked
+                        •  CLOSED - Closed
+                example: 001
+            statusDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for Status in user locale
+                example: Active
+            effecticeDate:
+                type: string
+                description: It is the date from which the Public Party status will be effective
+                format: date
+                example: '2018-10-02'
+            reason:
+                type: string
+                description: It is the reason for the change of Public Party status
+                maxLength: 256
+                example: Regulation
+            userDefinedFields:
+                type: array
+                description: User defined fields to capture additional attributes
+                items:
+                    $ref: '#/definitions/UserDefinedFields'
+    PublicPartyStatus:
+        type: object
+        title: Public Status of the party
+        description: Public Party Status
+        properties:
+            status:
+                type: string
+                maxLength: 50
+                description: |-
+                    Public Party Status gives the status of the customer external to the bank activities. This is an optional field. There can be more than one at a time.  The valid values are
+                        •007 - Deceased
+                        •BANKRUPT - Bankrupt
+                        •LIQUIDATED - Liquidated
+                        •EXAMINERSHIP - Examinership
+                        •INCARCERATED - Incarcerated
+            statusDescription:
+                type: string
+                maxLength: 255
+                readOnly: true
+                description: Description for Status in user locale
+                example: 7
+            effecticeDate:
+                type: string
+                description: It is the date from which the Public Party status will be effective
+                format: date
+                example: '2018-10-02'
+            reason:
+                type: string
+                description: It is the reason for the change of Public Party status
+                maxLength: 256
+                example: Regulation
+            userDefinedFields:
+                type: array
+                description: User defined fields to capture additional attributes
+                items:
+                    $ref: '#/definitions/UserDefinedFields'
+    Error:
+        type: object
+        description: This general error structure is used throughout the common service APIs that comply with RFC7807. Note that unrecognized parameters must be ignored.
+        properties:
+            type:
+                type: string
+                description: 'A URI reference [RFC3986] that identifies the problem type.'
+                example: 'https://api.finastra.com/validation-error'
+            title:
+                type: string
+                description: A short summary of the problem type.
+                example: 'Your request parameters did not validate'
+            status:
+                type: number
+                description: 'The HTTP status code. For example,[RFC7231], Section 6.'
+                example: '401'
+            detail:
+                type: string
+                description: The details that define the source of the problem.
+                example: 'Date validation Failied'
+            instance:
+                type: string
+                description: A URI reference that identifies the specific occurrence of the problem.
+                example: 'JSON parse error: Due to wrong date format'
+            details:
+                type: array
+                description: The error details are displayed.
+                items:
+                    $ref: '#/definitions/ErrorParameter'
+                example:
+        example: |-
+            {
+              "type": "https://api.finastra.com/validation-error",
+              "title": "Your request parameters didn't validate.",
+              "status": "401",
+              "detail": "",
+              "instance": "",
+              "details": [
+                {"name": "year", "reason": "must be yyyy format"}
+               ]
+            }
+    ErrorParameter:
+        type: object
+        title: Error Details
+        description: The error details are displayed.
+        required:
+        - name
+        - reason
+        properties:
+            name:
+                type: string
+                description: The field or the context of the error.
+                minLength: 2
+                maxLength: 30
+                example: 'year'
+            reason:
+                type: string
+                description: Detailed clarification of the error.
+                minLength: 2
+                maxLength: 255
+                example: 'must be yyyy format'
+
