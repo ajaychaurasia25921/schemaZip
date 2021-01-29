@@ -8,8 +8,14 @@ bin\windows\kafka-server-start.bat config\server-1.properties
 
 bin\windows\kafka-server-start.bat config\server-2.properties
 
+#Create Topic
+bin\windows\kafka-topics.bat --describe --topic quickstart-events --bootstrap-server localhost:9092
+
+#Produce Message
+bin\windows\kafka-console-producer.bat --topic wave2 --bootstrap-server localhost:9092
+
 #Consume Message
-bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic my-example-topic1 --from-beginning
+bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic wave2 --from-beginning
 
 bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic my-example-topic2 --from-beginning
 
